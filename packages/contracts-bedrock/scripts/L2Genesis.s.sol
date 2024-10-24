@@ -19,6 +19,7 @@ import { OptimismSuperchainERC20Beacon } from "src/L2/OptimismSuperchainERC20Bea
 import { OptimismMintableERC721Factory } from "src/L2/OptimismMintableERC721Factory.sol";
 import { IFeeVault } from "src/L2/interfaces/IFeeVault.sol";
 import { GovernanceToken } from "src/governance/GovernanceToken.sol";
+import { DeployUtils } from "scripts/libraries/DeployUtils.sol";
 
 // Libraries
 import { Predeploys } from "src/libraries/Predeploys.sol";
@@ -26,6 +27,11 @@ import { Preinstalls } from "src/libraries/Preinstalls.sol";
 import { Types } from "src/libraries/Types.sol";
 
 // Interfaces
+import { ISequencerFeeVault } from "src/L2/interfaces/ISequencerFeeVault.sol";
+import { IBaseFeeVault } from "src/L2/interfaces/IBaseFeeVault.sol";
+import { IL1FeeVault } from "src/L2/interfaces/IL1FeeVault.sol";
+import { IOptimismMintableERC721Factory } from "src/universal/interfaces/IOptimismMintableERC721Factory.sol";
+import { IGovernanceToken } from "src/governance/interfaces/IGovernanceToken.sol";
 import { IOptimismMintableERC20Factory } from "src/universal/interfaces/IOptimismMintableERC20Factory.sol";
 import { IL2StandardBridge } from "src/L2/interfaces/IL2StandardBridge.sol";
 import { IL2ERC721Bridge } from "src/L2/interfaces/IL2ERC721Bridge.sol";
@@ -195,6 +201,10 @@ contract L2Genesis is Deployer {
         if (writeForkGenesisAllocs(_fork, Fork.GRANITE, _mode)) {
             return;
         }
+
+        if (writeForkGenesisAllocs(_fork, Fork.HOLOCENE, _mode)) {
+            return;
+        }
     }
 
     function writeForkGenesisAllocs(Fork _latest, Fork _current, OutputMode _mode) internal returns (bool isLatest_) {
@@ -285,6 +295,7 @@ contract L2Genesis is Deployer {
             setETHLiquidity(); // 25
             setOptimismSuperchainERC20Factory(); // 26
             setOptimismSuperchainERC20Beacon(); // 27
+            setSuperchainTokenBridge(); // 28
         }
     }
 
@@ -395,7 +406,11 @@ contract L2Genesis is Deployer {
             return;
         }
 
-        GovernanceToken token = new GovernanceToken();
+        IGovernanceToken token = IGovernanceToken(
+            DeployUtils.create1(
+                "GovernanceToken", DeployUtils.encodeConstructor(abi.encodeCall(IGovernanceToken.__constructor__, ()))
+            )
+        );
         console.log("Setting %s implementation at: %s", "GovernanceToken", Predeploys.GOVERNANCE_TOKEN);
         vm.etch(Predeploys.GOVERNANCE_TOKEN, address(token).code);
 
@@ -469,21 +484,20 @@ contract L2Genesis is Deployer {
         _setImplementationCode(Predeploys.OPTIMISM_SUPERCHAIN_ERC20_FACTORY);
     }
 
-    /// @notice This predeploy is following the safety invariant #2.
+    /// @notice This predeploy is following the safety invariant #1.
+    ///         This contract has no initializer.
     function setOptimismSuperchainERC20Beacon() internal {
         address superchainERC20Impl = Predeploys.OPTIMISM_SUPERCHAIN_ERC20;
         console.log("Setting %s implementation at: %s", "OptimismSuperchainERC20", superchainERC20Impl);
         vm.etch(superchainERC20Impl, vm.getDeployedCode("OptimismSuperchainERC20.sol:OptimismSuperchainERC20"));
 
-        OptimismSuperchainERC20Beacon beacon = new OptimismSuperchainERC20Beacon(superchainERC20Impl);
-        address beaconImpl = Predeploys.predeployToCodeNamespace(Predeploys.OPTIMISM_SUPERCHAIN_ERC20_BEACON);
+        _setImplementationCode(Predeploys.OPTIMISM_SUPERCHAIN_ERC20_BEACON);
+    }
 
-        console.log("Setting %s implementation at: %s", "OptimismSuperchainERC20Beacon", beaconImpl);
-        vm.etch(beaconImpl, address(beacon).code);
-
-        /// Reset so its not included state dump
-        vm.etch(address(beacon), "");
-        vm.resetNonce(address(beacon));
+    /// @notice This predeploy is following the safety invariant #1.
+    ///         This contract has no initializer.
+    function setSuperchainTokenBridge() internal {
+        _setImplementationCode(Predeploys.SUPERCHAIN_TOKEN_BRIDGE);
     }
 
     /// @notice Sets all the preinstalls.

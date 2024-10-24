@@ -7,7 +7,7 @@ import { OptimismPortal2 } from "src/L1/OptimismPortal2.sol";
 // Libraries
 import { Predeploys } from "src/libraries/Predeploys.sol";
 import { Constants } from "src/libraries/Constants.sol";
-import "src/libraries/PortalErrors.sol";
+import { Unauthorized } from "src/libraries/PortalErrors.sol";
 
 /// @custom:proxied true
 /// @title OptimismPortalInterop
@@ -22,8 +22,8 @@ contract OptimismPortalInterop is OptimismPortal2 {
         OptimismPortal2(_proofMaturityDelaySeconds, _disputeGameFinalityDelaySeconds)
     { }
 
-    /// @custom:semver +interop-beta.1
+    /// @custom:semver +interop-beta.2
     function version() public pure override returns (string memory) {
-        return string.concat(super.version(), "+interop-beta.1");
+        return string.concat(super.version(), "+interop-beta.2");
     }
 }

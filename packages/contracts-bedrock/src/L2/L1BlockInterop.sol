@@ -10,7 +10,14 @@ import { GasPayingToken } from "src/libraries/GasPayingToken.sol";
 import { StaticConfig } from "src/libraries/StaticConfig.sol";
 import { Predeploys } from "src/libraries/Predeploys.sol";
 import { Types } from "src/libraries/Types.sol";
-import "src/libraries/L1BlockErrors.sol";
+import {
+    NotDepositor,
+    NotCrossL2Inbox,
+    NotDependency,
+    DependencySetSizeTooLarge,
+    AlreadyDependency,
+    CantRemovedDependency
+} from "src/libraries/L1BlockErrors.sol";
 
 /// @custom:proxied true
 /// @custom:predeploy 0x4200000000000000000000000000000000000015
@@ -33,9 +40,9 @@ contract L1BlockInterop is L1Block {
     /// keccak256(abi.encode(uint256(keccak256("l1Block.identifier.isDeposit")) - 1)) & ~bytes32(uint256(0xff))
     uint256 internal constant IS_DEPOSIT_SLOT = 0x921bd3a089295c6e5540e8fba8195448d253efd6f2e3e495b499b627dc36a300;
 
-    /// @custom:semver +interop
+    /// @custom:semver +interop-beta.1
     function version() public pure override returns (string memory) {
-        return string.concat(super.version(), "+interop");
+        return string.concat(super.version(), "+interop-beta.1");
     }
 
     /// @notice Returns whether the call was triggered from a a deposit or not.

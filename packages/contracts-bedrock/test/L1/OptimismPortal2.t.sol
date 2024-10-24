@@ -38,7 +38,6 @@ contract OptimismPortal2_Test is CommonTest {
     address depositor;
 
     function setUp() public virtual override {
-        super.enableFaultProofs();
         super.setUp();
 
         // zero out contracts that should not be used
@@ -536,7 +535,6 @@ contract OptimismPortal2_FinalizeWithdrawal_Test is CommonTest {
 
     // Use a constructor to set the storage vars above, so as to minimize the number of ffi calls.
     constructor() {
-        super.enableFaultProofs();
         super.setUp();
 
         _defaultTx = Types.WithdrawalTransaction({
@@ -1497,7 +1495,6 @@ contract OptimismPortal2_FinalizeWithdrawal_Test is CommonTest {
 
 contract OptimismPortal2_Upgradeable_Test is CommonTest {
     function setUp() public override {
-        super.enableFaultProofs();
         super.setUp();
     }
 
@@ -1543,7 +1540,6 @@ contract OptimismPortal2_ResourceFuzz_Test is CommonTest {
     uint256 constant MAX_GAS_LIMIT = 30_000_000;
 
     function setUp() public override {
-        super.enableFaultProofs();
         super.setUp();
     }
 
