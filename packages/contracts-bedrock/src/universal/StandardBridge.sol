@@ -25,7 +25,7 @@ abstract contract StandardBridge {
     /// @custom:legacy
     /// @custom:spacer messenger + initializable
     /// @notice Spacer for backwards compatibility.
-    bytes30 private spacer_0_2_30;
+    bytes30 private spacer_0_0_32;
 
     /// @custom:legacy
     /// @custom:spacer l2TokenBridge
