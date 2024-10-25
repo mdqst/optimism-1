@@ -2,6 +2,7 @@
 pragma solidity 0.8.15;
 
 import { OptimismMintableERC721 } from "src/universal/OptimismMintableERC721.sol";
+import { IL2ERC721Bridge } from "src/L2/interfaces/IL2ERC721Bridge.sol";
 import { ISemver } from "src/universal/interfaces/ISemver.sol";
 import { Initializable } from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 import { IL1Block } from "src/L2/interfaces/IL1Block.sol";
@@ -43,13 +44,13 @@ contract OptimismMintableERC721Factory is ISemver {
     }
 
     /// @notice TODO: type should be more strict
-    function BRIDGE() external pure returns (address) {
+    function BRIDGE() external pure returns (IL2ERC721Bridge) {
         return bridge();
     }
 
     /// @notice TODO: stronger type
-    function bridge() public pure returns (address) {
-        return Predeploys.L2_ERC721_BRIDGE;
+    function bridge() public pure returns (IL2ERC721Bridge) {
+        return IL2ERC721Bridge(Predeploys.L2_ERC721_BRIDGE);
     }
 
     /// @notice Creates an instance of the standard ERC721.

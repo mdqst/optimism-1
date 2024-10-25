@@ -226,7 +226,7 @@ contract L1Block is ISemver, IGasToken {
     }
 
     /// TODO: remove SET prefix on the ConfigType values
-    function getConfig(Types.ConfigType _type) public virtual returns (bytes memory data_) {
+    function getConfig(Types.ConfigType _type) public view virtual returns (bytes memory data_) {
         if (_type == Types.ConfigType.SET_GAS_PAYING_TOKEN) {
             (address addr, uint8 decimals) = gasPayingToken();
             data_ = abi.encode(

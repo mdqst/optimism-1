@@ -39,7 +39,7 @@ contract OptimismMintableERC721Factory_Test is Bridge_Initializer {
         assertEq(created.name(), "L2Token");
         assertEq(created.symbol(), "L2T");
         assertEq(created.REMOTE_TOKEN(), remote);
-        assertEq(created.BRIDGE(), address(l2ERC721Bridge));
+        assertEq(address(created.BRIDGE()), address(l2ERC721Bridge));
         assertEq(created.REMOTE_CHAIN_ID(), deploy.cfg().l1ChainID());
     }
 

@@ -2,6 +2,7 @@
 pragma solidity ^0.8.0;
 
 import { IERC721Enumerable } from "@openzeppelin/contracts/token/ERC721/extensions/IERC721Enumerable.sol";
+import { IL2ERC721Bridge } from "src/L2/interfaces/IL2ERC721Bridge.sol";
 
 /// @title IOptimismMintableERC721
 /// @notice Interface for contracts that are compatible with the OptimismMintableERC721 standard.
@@ -35,7 +36,7 @@ interface IOptimismMintableERC721 is IERC721Enumerable {
     function REMOTE_TOKEN() external view returns (address);
 
     /// @notice Address of the ERC721 bridge on this network.
-    function BRIDGE() external view returns (address);
+    function BRIDGE() external view returns (IL2ERC721Bridge);
 
     /// @notice Chain ID of the chain where the remote token is deployed.
     function remoteChainId() external view returns (uint256);
@@ -44,5 +45,5 @@ interface IOptimismMintableERC721 is IERC721Enumerable {
     function remoteToken() external view returns (address);
 
     /// @notice Address of the ERC721 bridge on this network.
-    function bridge() external view returns (address);
+    function bridge() external view returns (IL2ERC721Bridge);
 }

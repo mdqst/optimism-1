@@ -14,7 +14,6 @@ interface IL2ERC721Bridge is IERC721Bridge {
         bytes memory _extraData
     )
         external;
-    function MESSENGER() external pure returns (ICrossDomainMessenger);
     function messenger() external pure returns (ICrossDomainMessenger);
     function version() external view returns (string memory);
 

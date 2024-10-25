@@ -26,6 +26,7 @@ interface IL1Block {
     function setConfig(Types.ConfigType _type, bytes memory _value) external;
     function getConfig(Types.ConfigType _type) external view returns (bytes memory data_);
     function setGasPayingToken(address _token, uint8 _decimals, bytes32 _name, bytes32 _symbol) external;
+    function setHolocene() external;
     function setL1BlockValues(
         uint64 _number,
         uint64 _timestamp,

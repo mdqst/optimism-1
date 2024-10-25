@@ -6,7 +6,7 @@ interface IOptimismMintableERC721Factory {
 
     function BRIDGE() external view returns (address);
     function REMOTE_CHAIN_ID() external view returns (uint256);
-    function bridge() external view returns (address);
+    function bridge() external pure returns (address);
     function createOptimismMintableERC721(
         address _remoteToken,
         string memory _name,
@@ -17,4 +17,6 @@ interface IOptimismMintableERC721Factory {
     function isOptimismMintableERC721(address) external view returns (bool);
     function remoteChainId() external view returns (uint256);
     function version() external view returns (string memory);
+
+    function __constructor__() external;
 }

@@ -6,7 +6,7 @@ import { ICrossDomainMessenger } from "src/universal/interfaces/ICrossDomainMess
 import { ISuperchainConfig } from "src/L1/interfaces/ISuperchainConfig.sol";
 
 interface IL1ERC721Bridge is IERC721Bridge {
-    event Initialized(uint8 version);
+    event Initialized(uint64 version);
 
     function bridgeERC721(
         address _localToken,
@@ -36,6 +36,7 @@ interface IL1ERC721Bridge is IERC721Bridge {
     )
         external;
     function initialize(ICrossDomainMessenger _messenger, ISuperchainConfig _superchainConfig) external;
+    function otherBridge() external pure returns (IERC721Bridge);
     function paused() external view returns (bool);
     function superchainConfig() external view returns (ISuperchainConfig);
     function version() external view returns (string memory);

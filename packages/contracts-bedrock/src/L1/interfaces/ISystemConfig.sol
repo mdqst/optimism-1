@@ -76,7 +76,7 @@ interface ISystemConfig {
     function optimismPortal() external view returns (address addr_);
     function overhead() external view returns (uint256);
     function owner() external view returns (address);
-    function feeAdmin() external view returns (address);
+    function feeAdmin() external view returns (address addr_);
     function renounceOwnership() external;
     function resourceConfig() external view returns (IResourceMetering.ResourceConfig memory);
     function scalar() external view returns (uint256);
