@@ -4,7 +4,6 @@ pragma solidity 0.8.15;
 // Contracts
 import { OwnableUpgradeable } from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import { ERC20 } from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import { IFeeVault } from "src/L2/interfaces/IFeeVault.sol";
 import { StaticConfig } from "src/libraries/StaticConfig.sol";
 import { Encoding } from "src/libraries/Encoding.sol";
 

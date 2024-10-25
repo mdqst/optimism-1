@@ -7,7 +7,6 @@ import { Bridge_Initializer } from "test/setup/Bridge_Initializer.sol";
 // Libraries
 import { Hashing } from "src/libraries/Hashing.sol";
 import { Encoding } from "src/libraries/Encoding.sol";
-import { Bytes32AddressLib } from "@rari-capital/solmate/src/utils/Bytes32AddressLib.sol";
 
 // Target contract dependencies
 import { AddressAliasHelper } from "src/vendor/AddressAliasHelper.sol";

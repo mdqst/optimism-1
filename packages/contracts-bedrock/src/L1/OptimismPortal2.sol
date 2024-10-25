@@ -5,8 +5,6 @@ pragma solidity 0.8.15;
 import { Initializable } from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 import { ResourceMetering } from "src/L1/ResourceMetering.sol";
 
-import { ProxyAdmin } from "src/universal/ProxyAdmin.sol";
-
 // Libraries
 import { SafeERC20 } from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import { SafeCall } from "src/libraries/SafeCall.sol";

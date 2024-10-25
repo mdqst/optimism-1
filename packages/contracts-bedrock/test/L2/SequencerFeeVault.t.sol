@@ -4,7 +4,6 @@ pragma solidity 0.8.15;
 // Testing
 import { CommonTest } from "test/setup/CommonTest.sol";
 import { Reverter } from "test/mocks/Callers.sol";
-import { EIP1967Helper } from "test/mocks/EIP1967Helper.sol";
 
 // Contracts
 import { FeeVault } from "src/L2/FeeVault.sol";

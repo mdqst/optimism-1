@@ -2,8 +2,6 @@
 pragma solidity ^0.8.0;
 
 import { Types } from "src/libraries/Types.sol";
-import { IFeeVault } from "src/L2/interfaces/IFeeVault.sol";
-import { Encoding } from "src/libraries/Encoding.sol";
 
 // The main benefit of this library is to give the reader the ability to observe that
 // the encode decode logic is correct by being able to see it right next to each other.

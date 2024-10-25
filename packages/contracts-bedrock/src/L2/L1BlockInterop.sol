@@ -6,7 +6,6 @@ import { L1Block } from "src/L2/L1Block.sol";
 
 // Libraries
 import { EnumerableSet } from "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
-import { GasPayingToken } from "src/libraries/GasPayingToken.sol";
 import { StaticConfig } from "src/libraries/StaticConfig.sol";
 import { Predeploys } from "src/libraries/Predeploys.sol";
 import { Types } from "src/libraries/Types.sol";

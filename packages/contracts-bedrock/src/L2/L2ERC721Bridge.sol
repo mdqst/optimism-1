@@ -6,7 +6,6 @@ import { ERC721Bridge } from "src/universal/ERC721Bridge.sol";
 
 // Libraries
 import { ERC165Checker } from "@openzeppelin/contracts/utils/introspection/ERC165Checker.sol";
-import { Constants } from "src/libraries/Constants.sol";
 import { Predeploys } from "src/libraries/Predeploys.sol";
 import { Types } from "src/libraries/Types.sol";
 

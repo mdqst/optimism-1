@@ -2,13 +2,10 @@
 pragma solidity 0.8.15;
 
 // Contracts
-import { ERC20 } from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import { IOptimismPortalInterop as IOptimismPortal } from "src/L1/interfaces/IOptimismPortalInterop.sol";
 import { SystemConfig } from "src/L1/SystemConfig.sol";
 
 // Libraries
-import { Constants } from "src/libraries/Constants.sol";
-import { GasPayingToken } from "src/libraries/GasPayingToken.sol";
 import { StaticConfig } from "src/libraries/StaticConfig.sol";
 import { Storage } from "src/libraries/Storage.sol";
 import { Types } from "src/libraries/Types.sol";

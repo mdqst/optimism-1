@@ -9,7 +9,6 @@ import { SafeCall } from "src/libraries/SafeCall.sol";
 import { IOptimismMintableERC20, ILegacyMintableERC20 } from "src/universal/interfaces/IOptimismMintableERC20.sol";
 import { ICrossDomainMessenger } from "src/universal/interfaces/ICrossDomainMessenger.sol";
 import { OptimismMintableERC20 } from "src/universal/OptimismMintableERC20.sol";
-import { Initializable } from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 import { Constants } from "src/libraries/Constants.sol";
 
 /// @custom:upgradeable

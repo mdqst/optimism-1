@@ -11,9 +11,6 @@ import { LegacyCrossDomainUtils } from "src/libraries/LegacyCrossDomainUtils.sol
 // Target contract
 import { Encoding } from "src/libraries/Encoding.sol";
 
-// Interfaces
-import { IFeeVault } from "src/L2/interfaces/IFeeVault.sol";
-
 contract Encoding_Test is CommonTest {
     /// @dev Tests encoding and decoding a nonce and version.
     function testFuzz_nonceVersioning_succeeds(uint240 _nonce, uint16 _version) external pure {

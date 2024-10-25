@@ -7,7 +7,6 @@ import { Initializable } from "@openzeppelin/contracts-v5/proxy/utils/Initializa
 
 // Libraries
 import { Predeploys } from "src/libraries/Predeploys.sol";
-import { Constants } from "src/libraries/Constants.sol";
 
 // Interfaces
 import { IERC721 } from "@openzeppelin/contracts/token/ERC721/IERC721.sol";

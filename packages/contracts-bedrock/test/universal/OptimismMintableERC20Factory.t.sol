@@ -12,7 +12,6 @@ import { OptimismMintableERC20Factory } from "src/universal/OptimismMintableERC2
 
 // Interfaces
 import { IProxy } from "src/universal/interfaces/IProxy.sol";
-import { IOptimismMintableERC20Factory } from "src/universal/interfaces/IOptimismMintableERC20Factory.sol";
 
 contract OptimismMintableTokenFactory_Test is Bridge_Initializer {
     event StandardL2TokenCreated(address indexed remoteToken, address indexed localToken);

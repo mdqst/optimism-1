@@ -17,27 +17,15 @@ import { BaseFeeVault } from "src/L2/BaseFeeVault.sol";
 import { L1FeeVault } from "src/L2/L1FeeVault.sol";
 import { OptimismSuperchainERC20Beacon } from "src/L2/OptimismSuperchainERC20Beacon.sol";
 import { OptimismMintableERC721Factory } from "src/L2/OptimismMintableERC721Factory.sol";
-import { IFeeVault } from "src/L2/interfaces/IFeeVault.sol";
 import { GovernanceToken } from "src/governance/GovernanceToken.sol";
 import { DeployUtils } from "scripts/libraries/DeployUtils.sol";
 
 // Libraries
 import { Predeploys } from "src/libraries/Predeploys.sol";
 import { Preinstalls } from "src/libraries/Preinstalls.sol";
-import { Types } from "src/libraries/Types.sol";
 
 // Interfaces
-import { ISequencerFeeVault } from "src/L2/interfaces/ISequencerFeeVault.sol";
-import { IBaseFeeVault } from "src/L2/interfaces/IBaseFeeVault.sol";
-import { IL1FeeVault } from "src/L2/interfaces/IL1FeeVault.sol";
-import { IOptimismMintableERC721Factory } from "src/L2/interfaces/IOptimismMintableERC721Factory.sol";
 import { IGovernanceToken } from "src/governance/interfaces/IGovernanceToken.sol";
-import { IOptimismMintableERC20Factory } from "src/universal/interfaces/IOptimismMintableERC20Factory.sol";
-import { IL2StandardBridge } from "src/L2/interfaces/IL2StandardBridge.sol";
-import { IL2ERC721Bridge } from "src/L2/interfaces/IL2ERC721Bridge.sol";
-import { IStandardBridge } from "src/universal/interfaces/IStandardBridge.sol";
-import { ICrossDomainMessenger } from "src/universal/interfaces/ICrossDomainMessenger.sol";
-import { IL2CrossDomainMessenger } from "src/L2/interfaces/IL2CrossDomainMessenger.sol";
 import { IGasPriceOracle } from "src/L2/interfaces/IGasPriceOracle.sol";
 import { IL1Block } from "src/L2/interfaces/IL1Block.sol";
 

@@ -4,7 +4,6 @@ pragma solidity 0.8.15;
 import { OptimismMintableERC721 } from "src/universal/OptimismMintableERC721.sol";
 import { IL2ERC721Bridge } from "src/L2/interfaces/IL2ERC721Bridge.sol";
 import { ISemver } from "src/universal/interfaces/ISemver.sol";
-import { Initializable } from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 import { IL1Block } from "src/L2/interfaces/IL1Block.sol";
 import { Predeploys } from "src/libraries/Predeploys.sol";
 import { Types } from "src/libraries/Types.sol";

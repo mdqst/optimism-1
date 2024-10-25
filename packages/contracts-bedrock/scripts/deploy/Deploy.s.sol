@@ -56,7 +56,6 @@ import { IAnchorStateRegistry } from "src/dispute/interfaces/IAnchorStateRegistr
 import { IMIPS } from "src/cannon/interfaces/IMIPS.sol";
 import { IMIPS2 } from "src/cannon/interfaces/IMIPS2.sol";
 import { IPreimageOracle } from "src/cannon/interfaces/IPreimageOracle.sol";
-import { IL1OptimismMintableERC20Factory } from "src/L1/interfaces/IL1OptimismMintableERC20Factory.sol";
 import { IAddressManager } from "src/legacy/interfaces/IAddressManager.sol";
 import { IL1ChugSplashProxy } from "src/legacy/interfaces/IL1ChugSplashProxy.sol";
 import { IResolvedDelegateProxy } from "src/legacy/interfaces/IResolvedDelegateProxy.sol";

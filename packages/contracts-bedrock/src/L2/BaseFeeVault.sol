@@ -5,7 +5,6 @@ import { ISemver } from "src/universal/interfaces/ISemver.sol";
 import { FeeVault } from "src/L2/FeeVault.sol";
 import { Types } from "src/libraries/Types.sol";
 import { Encoding } from "src/libraries/Encoding.sol";
-import { IFeeVault } from "src/L2/interfaces/IFeeVault.sol";
 
 /// @custom:proxied true
 /// @custom:predeploy 0x4200000000000000000000000000000000000019

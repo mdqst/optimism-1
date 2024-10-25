@@ -8,7 +8,7 @@ import { Vm } from "forge-std/Vm.sol";
 // Scripts
 import { Deploy } from "scripts/deploy/Deploy.s.sol";
 import { Fork, LATEST_FORK } from "scripts/libraries/Config.sol";
-import { L2Genesis, L1Dependencies } from "scripts/L2Genesis.s.sol";
+import { L2Genesis } from "scripts/L2Genesis.s.sol";
 import { OutputMode, Fork, ForkUtils } from "scripts/libraries/Config.sol";
 
 // Libraries
@@ -52,7 +52,6 @@ import { IETHLiquidity } from "src/L2/interfaces/IETHLiquidity.sol";
 import { IWETH } from "src/universal/interfaces/IWETH.sol";
 import { IGovernanceToken } from "src/governance/interfaces/IGovernanceToken.sol";
 import { ILegacyMessagePasser } from "src/legacy/interfaces/ILegacyMessagePasser.sol";
-import { IFeeVault } from "src/L2/interfaces/IFeeVault.sol";
 import { ISuperchainTokenBridge } from "src/L2/interfaces/ISuperchainTokenBridge.sol";
 
 /// @title Setup

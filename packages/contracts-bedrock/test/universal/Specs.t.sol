@@ -14,7 +14,6 @@ import { OPContractsManager } from "src/L1/OPContractsManager.sol";
 // Interfaces
 import { IOptimismPortal } from "src/L1/interfaces/IOptimismPortal.sol";
 import { IOptimismPortal2 } from "src/L1/interfaces/IOptimismPortal2.sol";
-import { IOptimismPortalInterop } from "src/L1/interfaces/IOptimismPortalInterop.sol";
 import { ISystemConfig } from "src/L1/interfaces/ISystemConfig.sol";
 import { IDataAvailabilityChallenge } from "src/L1/interfaces/IDataAvailabilityChallenge.sol";
 import { IProtocolVersions } from "src/L1/interfaces/IProtocolVersions.sol";
