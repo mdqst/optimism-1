@@ -12,7 +12,7 @@ import { IOptimismERC20Factory } from "src/L2/interfaces/IOptimismERC20Factory.s
 abstract contract OptimismMintableERC20Factory is ISemver, IOptimismERC20Factory {
     /// @custom:spacer OptimismMintableERC20Factory's initializer slot spacing
     /// @notice Spacer to avoid packing into the initializer slot
-    bytes30 private spacer_0_2_30;
+    bytes32 private spacer_0_0_32;
 
     /// @custom:spacer bridge
     /// @notice Spacer to avoid packing into the initializer slot
