@@ -9,8 +9,8 @@ contract OptimismMintableERC721Factory_Test is Bridge_Initializer {
     event OptimismMintableERC721Created(address indexed localToken, address indexed remoteToken, address deployer);
 
     function test_constructor_succeeds() external view {
-        assertEq(l2OptimismMintableERC721Factory.BRIDGE(), address(l2ERC721Bridge));
-        assertEq(l2OptimismMintableERC721Factory.bridge(), address(l2ERC721Bridge));
+        assertEq(address(l2OptimismMintableERC721Factory.BRIDGE()), address(l2ERC721Bridge));
+        assertEq(address(l2OptimismMintableERC721Factory.bridge()), address(l2ERC721Bridge));
         assertEq(l2OptimismMintableERC721Factory.REMOTE_CHAIN_ID(), deploy.cfg().l1ChainID());
         assertEq(l2OptimismMintableERC721Factory.remoteChainId(), deploy.cfg().l1ChainID());
     }

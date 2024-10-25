@@ -7,6 +7,9 @@ import { ISuperchainConfig } from "src/L1/interfaces/ISuperchainConfig.sol";
 import { ISystemConfig } from "src/L1/interfaces/ISystemConfig.sol";
 
 interface IL1StandardBridge is IStandardBridge {
+    error InvalidInitialization();
+    error NotInitializing();
+
     event ERC20DepositInitiated(
         address indexed l1Token,
         address indexed l2Token,

@@ -6,6 +6,8 @@ import { Types } from "src/libraries/Types.sol";
 
 /// @notice This interface corresponds to the Custom Gas Token version of the SystemConfig contract.
 interface ISystemConfig {
+    error UnsafeCast();
+
     enum UpdateType {
         BATCHER,
         FEE_SCALARS,
