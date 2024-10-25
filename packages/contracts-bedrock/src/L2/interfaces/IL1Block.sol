@@ -5,6 +5,7 @@ import { Types } from "src/libraries/Types.sol";
 
 interface IL1Block {
     error NotDepositor();
+    error UnsafeCast();
 
     event GasPayingTokenSet(address indexed token, uint8 indexed decimals, bytes32 name, bytes32 symbol);
 
