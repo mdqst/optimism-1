@@ -384,21 +384,23 @@ contract OptimismPortal2_Test is CommonTest {
 
     /// @dev Tests that the upgrade function succeeds.
     function testFuzz_upgrade_succeeds(uint32 _gasLimit, bytes memory _calldata) external {
+        address upgrader = superchainConfig.upgrader();
+
         vm.expectEmit(address(optimismPortal2));
         emit TransactionDeposited(
             0xDeaDDEaDDeAdDeAdDEAdDEaddeAddEAdDEAd0001,
-            Predeploys.L1_BLOCK_ATTRIBUTES,
+            Predeploys.PROXY_ADMIN,
             0,
             abi.encodePacked(
                 uint256(0), // mint
                 uint256(0), // value
                 uint64(_gasLimit), // gasLimit
                 false, // isCreation,
-                _calldata // data
+                _calldata
             )
         );
 
-        vm.prank(superchainConfig.upgrader());
+        vm.prank(upgrader);
         optimismPortal2.upgrade(_gasLimit, _calldata);
     }
 
