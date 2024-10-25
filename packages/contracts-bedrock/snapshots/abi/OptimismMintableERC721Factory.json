@@ -4,7 +4,7 @@
     "name": "BRIDGE",
     "outputs": [
       {
-        "internalType": "address",
+        "internalType": "contract IL2ERC721Bridge",
         "name": "",
         "type": "address"
       }
@@ -30,7 +30,7 @@
     "name": "bridge",
     "outputs": [
       {
-        "internalType": "address",
+        "internalType": "contract IL2ERC721Bridge",
         "name": "",
         "type": "address"
       }

@@ -24,8 +24,8 @@
     "sourceCodeHash": "0x4132ff37d267cb12224b75ea806c0aa7d25407b0d66ce526d7fcda8f7d223882"
   },
   "src/L1/OPContractsManager.sol": {
-    "initCodeHash": "0xb8eec17e58db216ea05f878813d56b82f10146a03912a22a468e3c54ef60cb05",
-    "sourceCodeHash": "0x144225f483744d5f91741c72912077b00f95bbb71d6f93a416cc1a30f3c855ef"
+    "initCodeHash": "0x1b8dc7991c1c3c4dde7563fe41e934c8282e68e559b5f3ea85959788fc1ab0d3",
+    "sourceCodeHash": "0x1c170bfaadb48d152d8a68ead176d5c1d7f2358330be21f3eb31ffd64b460cee"
   },
   "src/L1/OptimismPortal.sol": {
     "initCodeHash": "0x25c4212bac52f172b193cb3c36376074f239491d53c0d83c5081df7042cd02f8",
@@ -108,7 +108,7 @@
     "sourceCodeHash": "0x6f5225ce73a3e3257cb233d3a22e91a1be331691f8ee47e096a015dee2cec85f"
   },
   "src/L2/OptimismMintableERC721Factory.sol": {
-    "initCodeHash": "0x6bd616a87ce1abbfb6653ea3749228fd064476a5efeff8535cd40f2259c27acc",
+    "initCodeHash": "0x5fcfad1dc92d90c553c9dc852e564ec902250bdb70883d88e1235a32264317d5",
     "sourceCodeHash": "0xf344e202db723f72c1718ab860f8763ef5a525caa044d7de993f789ed5fbc679"
   },
   "src/L2/OptimismSuperchainERC20.sol": {
@@ -217,11 +217,11 @@
   },
   "src/universal/OptimismMintableERC20Factory.sol": {
     "initCodeHash": "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470",
-    "sourceCodeHash": "0x95a74325f28d0c846507132c4ba5fbe6698f5b6aa7d288a0c0b794430b0574c6"
+    "sourceCodeHash": "0x081883279bb9201f60ca96cfd4cfe121b57a0c8b57c777835252552d61f6e776"
   },
   "src/universal/OptimismMintableERC721.sol": {
-    "initCodeHash": "0x1e9e5b8388c5a5155a36767aa7dab6f471efcf6edc0b82158758fa41c93f407b",
-    "sourceCodeHash": "0xc3dadcf9c643cb738fce71c694c8fd7e5c65feda90f8ae1cfe7f2725bc8b5179"
+    "initCodeHash": "0xeaddb7547df4df78e2d24b4070cb17b3478e0f0bee79de5232189f6ae3cf6e8a",
+    "sourceCodeHash": "0xfeac1958c2170afa17df1166e864e013337c8b548f5fb86decead3350632e194"
   },
   "src/universal/StorageSetter.sol": {
     "initCodeHash": "0x21b3059e9b13b330f76d02b61f61dcfa3abf3517a0b56afa0895c4b8291740bf",
