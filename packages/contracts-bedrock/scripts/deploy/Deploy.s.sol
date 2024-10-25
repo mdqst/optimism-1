@@ -176,7 +176,7 @@ contract Deploy is Deployer {
             DelayedWETH: getAddress("DelayedWETH"),
             PermissionedDelayedWETH: getAddress("PermissionedDelayedWETH"),
             AnchorStateRegistry: getAddress("AnchorStateRegistry"),
-            OptimismMintableERC20Factory: getAddress("OptimismMintableERC20Factory"),
+            OptimismMintableERC20Factory: getAddress("L1OptimismMintableERC20Factory"),
             OptimismPortal: getAddress("OptimismPortal"),
             OptimismPortal2: getAddress("OptimismPortal2"),
             SystemConfig: getAddress("SystemConfig"),
