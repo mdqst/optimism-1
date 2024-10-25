@@ -255,7 +255,7 @@ contract OPContractsManager is ISemver, Initializable {
         output.systemConfigProxy =
             ISystemConfig(deployProxy(l2ChainId, output.opChainProxyAdmin, saltMixer, "SystemConfig"));
         output.optimismMintableERC20FactoryProxy = IOptimismMintableERC20Factory(
-            deployProxy(l2ChainId, output.opChainProxyAdmin, saltMixer, "OptimismMintableERC20Factory")
+            deployProxy(l2ChainId, output.opChainProxyAdmin, saltMixer, "L1OptimismMintableERC20Factory")
         );
         output.disputeGameFactoryProxy =
             IDisputeGameFactory(deployProxy(l2ChainId, output.opChainProxyAdmin, saltMixer, "DisputeGameFactory"));
