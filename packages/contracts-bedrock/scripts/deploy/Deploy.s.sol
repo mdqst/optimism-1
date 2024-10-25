@@ -399,7 +399,7 @@ contract Deploy is Deployer {
         }
 
         save("L1CrossDomainMessenger", address(dio.l1CrossDomainMessengerImpl()));
-        // Save under both sames for backwards compatibility
+        // Save under both names for backwards compatibility
         save("OptimismMintableERC20Factory", address(dio.optimismMintableERC20FactoryImpl()));
         save("L1OptimismMintableERC20Factory", address(dio.optimismMintableERC20FactoryImpl()));
         save("SystemConfig", address(dio.systemConfigImpl()));
@@ -459,7 +459,9 @@ contract Deploy is Deployer {
         save("AddressManager", address(deployOutput.addressManager));
         save("L1ERC721BridgeProxy", address(deployOutput.l1ERC721BridgeProxy));
         save("SystemConfigProxy", address(deployOutput.systemConfigProxy));
+        // Save under both names for backwards compatibility
         save("OptimismMintableERC20FactoryProxy", address(deployOutput.optimismMintableERC20FactoryProxy));
+        save("L1OptimismMintableERC20FactoryProxy", address(deployOutput.optimismMintableERC20FactoryProxy));
         save("L1StandardBridgeProxy", address(deployOutput.l1StandardBridgeProxy));
         save("L1CrossDomainMessengerProxy", address(deployOutput.l1CrossDomainMessengerProxy));
 
