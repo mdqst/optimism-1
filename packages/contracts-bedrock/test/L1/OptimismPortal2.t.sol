@@ -412,6 +412,7 @@ contract OptimismPortal2_Test is CommonTest {
         IResourceMetering.ResourceConfig memory rcfg = systemConfig.resourceConfig();
         _gasLimit =
             uint32(bound(_gasLimit, optimismPortal2.minimumGasLimit(uint32(_calldata.length)), rcfg.maxResourceLimit));
+
         vm.recordLogs();
 
         vm.prank(superchainConfig.upgrader());
@@ -422,7 +423,7 @@ contract OptimismPortal2_Test is CommonTest {
         optimismPortal2.depositTransaction({
             _to: Predeploys.PROXY_ADMIN,
             _value: 0,
-            _gasLimit: uint64(200_000),
+            _gasLimit: uint64(_gasLimit),
             _isCreation: false,
             _data: _calldata
         });

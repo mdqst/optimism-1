@@ -22,8 +22,8 @@ contract OptimismPortalInterop is OptimismPortal2 {
         OptimismPortal2(_proofMaturityDelaySeconds, _disputeGameFinalityDelaySeconds)
     { }
 
-    /// @custom:semver +interop-beta.2
+    /// @custom:semver +interop-beta.3
     function version() public pure override returns (string memory) {
-        return string.concat(super.version(), "+interop-beta.2");
+        return string.concat(super.version(), "+interop-beta.3");
     }
 }
