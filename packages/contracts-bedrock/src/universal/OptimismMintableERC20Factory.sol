@@ -44,8 +44,8 @@ abstract contract OptimismMintableERC20Factory is ISemver, IOptimismERC20Factory
     ///         the OptimismMintableERC20 token contract since this contract
     ///         is responsible for deploying OptimismMintableERC20 contracts.
     /// @notice Semantic version.
-    /// @custom:semver 1.10.1-beta.3
-    string public constant version = "1.10.1-beta.3";
+    /// @custom:semver 1.10.1-beta.4
+    string public constant version = "1.10.1-beta.4";
 
     function bridge() public view virtual returns (address);
 

@@ -33,8 +33,8 @@ contract OptimismMintableERC721 is ERC721Enumerable, IOptimismMintableERC721, IS
     }
 
     /// @notice Semantic version.
-    /// @custom:semver 1.3.1-beta.2
-    string public constant version = "1.3.1-beta.2";
+    /// @custom:semver 1.3.1-beta.3
+    string public constant version = "1.3.1-beta.3";
 
     /// @param _bridge        Address of the bridge on this network.
     /// @param _remoteChainId Chain ID where the remote token is deployed.
