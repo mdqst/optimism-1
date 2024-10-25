@@ -158,7 +158,6 @@ contract Setup {
         l1CrossDomainMessenger = IL1CrossDomainMessenger(deploy.mustGetAddress("L1CrossDomainMessengerProxy"));
         addressManager = IAddressManager(deploy.mustGetAddress("AddressManager"));
         l1ERC721Bridge = IL1ERC721Bridge(deploy.mustGetAddress("L1ERC721BridgeProxy"));
-        // TODO: change the string name to "L1OptimismMintableERC20FactoryProxy"
         l1OptimismMintableERC20Factory =
             IL1OptimismMintableERC20Factory(deploy.mustGetAddress("L1OptimismMintableERC20FactoryProxy"));
         protocolVersions = IProtocolVersions(deploy.mustGetAddress("ProtocolVersionsProxy"));
