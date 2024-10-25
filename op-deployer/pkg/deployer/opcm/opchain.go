@@ -30,7 +30,7 @@ type DeployOPChainInput struct {
 	UnsafeBlockSigner      common.Address
 	Proposer               common.Address
 	Challenger             common.Address
-	// TODO: feeAdmin
+	FeeAdmin               common.Address
 
 	BasefeeScalar     uint32
 	BlobBaseFeeScalar uint32
@@ -123,6 +123,7 @@ type opcmRoles struct {
 	UnsafeBlockSigner      common.Address
 	Proposer               common.Address
 	Challenger             common.Address
+	FeeAdmin               common.Address
 }
 
 // opcmDeployInput is the input struct for the deploy method of the OPStackManager contract. We
@@ -254,6 +255,7 @@ func DeployOPChainRaw(
 			UnsafeBlockSigner:      input.UnsafeBlockSigner,
 			Proposer:               input.Proposer,
 			Challenger:             input.Challenger,
+			FeeAdmin:               input.FeeAdmin,
 		},
 		BasefeeScalar:           input.BasefeeScalar,
 		BlobBasefeeScalar:       input.BlobBaseFeeScalar,
