@@ -94,7 +94,6 @@ rules:
       - pattern-not-regex: \"([a-zA-Z0-9\s]+-[a-zA-Z0-9\s]+-[a-zA-Z0-9\s]+)\"
     paths:
       exclude:
-        - packages/contracts-bedrock/test
         - packages/contracts-bedrock/src/libraries/Bytes.sol
         - packages/contracts-bedrock/src/legacy/LegacyMintableERC20.sol
         - packages/contracts-bedrock/src/cannon/MIPS.sol
@@ -116,5 +115,18 @@ rules:
       - pattern-not-regex: \"([a-zA-Z0-9\s]+-[a-zA-Z0-9\s]+-[a-zA-Z0-9\s]+)\"
     paths:
       exclude:
-        - packages/contracts-bedrock/test
         - packages/contracts-bedrock/src/cannon/libraries/MIPSInstructions.sol
+
+  - id: sol-style-use-abi-encodecall
+    languages: [solidity]
+    severity: ERROR
+    message: Use abi.encodeCall instead of abi.encodeWithSelector
+    patterns:
+      - pattern: |
+          abi.encodeWithSelector(...);
+    paths:
+      exclude:
+        - packages/contracts-bedrock/test
+        - packages/contracts-bedrock/src/L1/OPContractsManager.sol
+        - packages/contracts-bedrock/src/L1/OPContractsManagerInterop.sol
+        - packages/contracts-bedrock/src/legacy/L1ChugSplashProxy.sol

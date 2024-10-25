@@ -117,7 +117,7 @@ func TestEVMSingleStep_Operators64(t *testing.T) {
 				state.GetRegistersRef()[rsReg] = tt.rs
 				state.GetRegistersRef()[rtReg] = tt.rt
 			}
-			state.GetMemory().SetUint32(0, insn)
+			testutil.StoreInstruction(state.GetMemory(), 0, insn)
 			step := state.GetStep()
 
 			// Setup expectations
@@ -200,7 +200,7 @@ func TestEVMSingleStep_Shift(t *testing.T) {
 			insn = rtReg<<16 | rdReg<<11 | tt.sa<<6 | tt.funct
 			state.GetRegistersRef()[rdReg] = tt.rd
 			state.GetRegistersRef()[rtReg] = tt.rt
-			state.GetMemory().SetUint32(0, insn)
+			testutil.StoreInstruction(state.GetMemory(), 0, insn)
 			step := state.GetStep()
 
 			// Setup expectations
@@ -322,19 +322,19 @@ func TestEVMSingleStep_LoadStore64(t *testing.T) {
 		{name: "lwr sign-extended imm 7 sign bit 31 clear", opcode: uint32(0x26), rt: Word(0x11_22_33_44_55_66_77_88), imm: 7, memVal: Word(0xAA_BB_CC_DD_71_B1_C1_D1), expectRes: Word(0x00_00_00_00_71_B1_C1_D1)}, // lwr $t0, 7($t1)
 		{name: "lwr sign-extended imm 7 sign bit 31 set", opcode: uint32(0x26), rt: Word(0x11_22_33_44_55_66_77_88), imm: 7, memVal: Word(0xAA_BB_CC_DD_A1_B1_C1_D1), expectRes: Word(0xFF_FF_FF_FF_A1_B1_C1_D1)},   // lwr $t0, 7($t1)
 
-		{name: "sb offset=0", opcode: uint32(0x28), rt: Word(0x11_22_33_44_55_66_77_88), imm: 0, expectMemVal: Word(0x88_00_00_00_00_00_00_00)}, // sb $t0, 0($t1)
-		{name: "sb offset=1", opcode: uint32(0x28), rt: Word(0x11_22_33_44_55_66_77_88), imm: 1, expectMemVal: Word(0x00_88_00_00_00_00_00_00)}, // sb $t0, 1($t1)
-		{name: "sb offset=2", opcode: uint32(0x28), rt: Word(0x11_22_33_44_55_66_77_88), imm: 2, expectMemVal: Word(0x00_00_88_00_00_00_00_00)}, // sb $t0, 2($t1)
-		{name: "sb offset=3", opcode: uint32(0x28), rt: Word(0x11_22_33_44_55_66_77_88), imm: 3, expectMemVal: Word(0x00_00_00_88_00_00_00_00)}, // sb $t0, 3($t1)
-		{name: "sb offset=4", opcode: uint32(0x28), rt: Word(0x11_22_33_44_55_66_77_88), imm: 4, expectMemVal: Word(0x00_00_00_00_88_00_00_00)}, // sb $t0, 4($t1)
-		{name: "sb offset=5", opcode: uint32(0x28), rt: Word(0x11_22_33_44_55_66_77_88), imm: 5, expectMemVal: Word(0x00_00_00_00_00_88_00_00)}, // sb $t0, 5($t1)
-		{name: "sb offset=6", opcode: uint32(0x28), rt: Word(0x11_22_33_44_55_66_77_88), imm: 6, expectMemVal: Word(0x00_00_00_00_00_00_88_00)}, // sb $t0, 6($t1)
-		{name: "sb offset=7", opcode: uint32(0x28), rt: Word(0x11_22_33_44_55_66_77_88), imm: 7, expectMemVal: Word(0x00_00_00_00_00_00_00_88)}, // sb $t0, 7($t1)
+		{name: "sb offset=0", opcode: uint32(0x28), memVal: Word(0xAA_BB_CC_DD_A1_B1_C1_D1), rt: Word(0x11_22_33_44_55_66_77_88), imm: 0, expectMemVal: Word(0x88_BB_CC_DD_A1_B1_C1_D1)}, // sb $t0, 0($t1)
+		{name: "sb offset=1", opcode: uint32(0x28), memVal: Word(0xAA_BB_CC_DD_A1_B1_C1_D1), rt: Word(0x11_22_33_44_55_66_77_88), imm: 1, expectMemVal: Word(0xAA_88_CC_DD_A1_B1_C1_D1)}, // sb $t0, 1($t1)
+		{name: "sb offset=2", opcode: uint32(0x28), memVal: Word(0xAA_BB_CC_DD_A1_B1_C1_D1), rt: Word(0x11_22_33_44_55_66_77_88), imm: 2, expectMemVal: Word(0xAA_BB_88_DD_A1_B1_C1_D1)}, // sb $t0, 2($t1)
+		{name: "sb offset=3", opcode: uint32(0x28), memVal: Word(0xAA_BB_CC_DD_A1_B1_C1_D1), rt: Word(0x11_22_33_44_55_66_77_88), imm: 3, expectMemVal: Word(0xAA_BB_CC_88_A1_B1_C1_D1)}, // sb $t0, 3($t1)
+		{name: "sb offset=4", opcode: uint32(0x28), memVal: Word(0xAA_BB_CC_DD_A1_B1_C1_D1), rt: Word(0x11_22_33_44_55_66_77_88), imm: 4, expectMemVal: Word(0xAA_BB_CC_DD_88_B1_C1_D1)}, // sb $t0, 4($t1)
+		{name: "sb offset=5", opcode: uint32(0x28), memVal: Word(0xAA_BB_CC_DD_A1_B1_C1_D1), rt: Word(0x11_22_33_44_55_66_77_88), imm: 5, expectMemVal: Word(0xAA_BB_CC_DD_A1_88_C1_D1)}, // sb $t0, 5($t1)
+		{name: "sb offset=6", opcode: uint32(0x28), memVal: Word(0xAA_BB_CC_DD_A1_B1_C1_D1), rt: Word(0x11_22_33_44_55_66_77_88), imm: 6, expectMemVal: Word(0xAA_BB_CC_DD_A1_B1_88_D1)}, // sb $t0, 6($t1)
+		{name: "sb offset=7", opcode: uint32(0x28), memVal: Word(0xAA_BB_CC_DD_A1_B1_C1_D1), rt: Word(0x11_22_33_44_55_66_77_88), imm: 7, expectMemVal: Word(0xAA_BB_CC_DD_A1_B1_C1_88)}, // sb $t0, 7($t1)
 
-		{name: "sh offset=0", opcode: uint32(0x29), rt: Word(0x11_22_33_44_55_66_77_88), imm: 0, expectMemVal: Word(0x77_88_00_00_00_00_00_00)}, // sh $t0, 0($t1)
-		{name: "sh offset=2", opcode: uint32(0x29), rt: Word(0x11_22_33_44_55_66_77_88), imm: 2, expectMemVal: Word(0x00_00_77_88_00_00_00_00)}, // sh $t0, 2($t1)
-		{name: "sh offset=4", opcode: uint32(0x29), rt: Word(0x11_22_33_44_55_66_77_88), imm: 4, expectMemVal: Word(0x00_00_00_00_77_88_00_00)}, // sh $t0, 4($t1)
-		{name: "sh offset=6", opcode: uint32(0x29), rt: Word(0x11_22_33_44_55_66_77_88), imm: 6, expectMemVal: Word(0x00_00_00_00_00_00_77_88)}, // sh $t0, 6($t1)
+		{name: "sh offset=0", opcode: uint32(0x29), memVal: Word(0xAA_BB_CC_DD_A1_B1_C1_D1), rt: Word(0x11_22_33_44_55_66_77_88), imm: 0, expectMemVal: Word(0x77_88_CC_DD_A1_B1_C1_D1)}, // sh $t0, 0($t1)
+		{name: "sh offset=2", opcode: uint32(0x29), memVal: Word(0xAA_BB_CC_DD_A1_B1_C1_D1), rt: Word(0x11_22_33_44_55_66_77_88), imm: 2, expectMemVal: Word(0xAA_BB_77_88_A1_B1_C1_D1)}, // sh $t0, 2($t1)
+		{name: "sh offset=4", opcode: uint32(0x29), memVal: Word(0xAA_BB_CC_DD_A1_B1_C1_D1), rt: Word(0x11_22_33_44_55_66_77_88), imm: 4, expectMemVal: Word(0xAA_BB_CC_DD_77_88_C1_D1)}, // sh $t0, 4($t1)
+		{name: "sh offset=6", opcode: uint32(0x29), memVal: Word(0xAA_BB_CC_DD_A1_B1_C1_D1), rt: Word(0x11_22_33_44_55_66_77_88), imm: 6, expectMemVal: Word(0xAA_BB_CC_DD_A1_B1_77_88)}, // sh $t0, 6($t1)
 
 		{name: "swl offset=0", opcode: uint32(0x2a), rt: Word(0x11_22_33_44_55_66_77_88), memVal: Word(0xAA_BB_CC_DD_A1_B1_C1_D1), imm: 0, expectMemVal: Word(0x55_66_77_88_A1_B1_C1_D1)}, //  swl $t0, 0($t1)
 		{name: "swl offset=1", opcode: uint32(0x2a), rt: Word(0x11_22_33_44_55_66_77_88), memVal: Word(0xAA_BB_CC_DD_A1_B1_C1_D1), imm: 1, expectMemVal: Word(0xAA_55_66_77_A1_B1_C1_D1)}, //  swl $t0, 1($t1)
@@ -438,7 +438,7 @@ func TestEVMSingleStep_LoadStore64(t *testing.T) {
 			state.GetRegistersRef()[rtReg] = tt.rt
 			state.GetRegistersRef()[baseReg] = t1
 
-			state.GetMemory().SetUint32(0, insn)
+			testutil.StoreInstruction(state.GetMemory(), 0, insn)
 			state.GetMemory().SetWord(t1&arch.AddressMask, tt.memVal)
 			step := state.GetStep()
 
@@ -543,7 +543,7 @@ func TestEVMSingleStep_DivMult(t *testing.T) {
 			insn := rsReg<<21 | rtReg<<16 | tt.funct
 			state.GetRegistersRef()[rsReg] = tt.rs
 			state.GetRegistersRef()[rtReg] = tt.rt
-			state.GetMemory().SetUint32(0, insn)
+			testutil.StoreInstruction(state.GetMemory(), 0, insn)
 			step := state.GetStep()
 
 			// Setup expectations
@@ -633,7 +633,7 @@ func TestEVMSingleStepBranch64(t *testing.T) {
 				state := goVm.GetState()
 				const rsReg = 8 // t0
 				insn := tt.opcode<<26 | rsReg<<21 | tt.regimm<<16 | uint32(tt.offset)
-				state.GetMemory().SetUint32(tt.pc, insn)
+				testutil.StoreInstruction(state.GetMemory(), tt.pc, insn)
 				state.GetRegistersRef()[rsReg] = Word(tt.rs)
 				step := state.GetStep()
 

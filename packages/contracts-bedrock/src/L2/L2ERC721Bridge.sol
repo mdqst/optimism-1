@@ -118,8 +118,8 @@ contract L2ERC721Bridge is ERC721Bridge, ISemver {
         // slither-disable-next-line reentrancy-events
         IOptimismMintableERC721(_localToken).burn(_from, _tokenId);
 
-        bytes memory message = abi.encodeWithSelector(
-            IL1ERC721Bridge.finalizeBridgeERC721.selector, remoteToken, _localToken, _from, _to, _tokenId, _extraData
+        bytes memory message = abi.encodeCall(
+            IL1ERC721Bridge.finalizeBridgeERC721, (remoteToken, _localToken, _from, _to, _tokenId, _extraData)
         );
 
         // Send message to L1 bridge

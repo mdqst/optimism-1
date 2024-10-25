@@ -122,8 +122,8 @@ contract L1ERC721Bridge is ERC721Bridge, Initializable, ISemver {
         require(_remoteToken != address(0), "L1ERC721Bridge: remote token cannot be address(0)");
 
         // Construct calldata for _l2Token.finalizeBridgeERC721(_to, _tokenId)
-        bytes memory message = abi.encodeWithSelector(
-            IL2ERC721Bridge.finalizeBridgeERC721.selector, _remoteToken, _localToken, _from, _to, _tokenId, _extraData
+        bytes memory message = abi.encodeCall(
+            IL2ERC721Bridge.finalizeBridgeERC721, (_remoteToken, _localToken, _from, _to, _tokenId, _extraData)
         );
 
         // Lock token into bridge
