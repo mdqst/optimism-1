@@ -16,7 +16,7 @@ abstract contract OptimismMintableERC20Factory is ISemver, IOptimismERC20Factory
 
     /// @custom:spacer bridge
     /// @notice Spacer to avoid packing into the initializer slot
-    bytes32 private spacer_0_1_32;
+    bytes32 private spacer_1_0_32;
 
     /// @notice Mapping of local token address to remote token address.
     ///         This is used to keep track of the token deployments.
