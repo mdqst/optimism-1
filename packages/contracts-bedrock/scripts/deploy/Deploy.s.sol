@@ -1268,8 +1268,9 @@ contract Deploy is Deployer {
                 batcher: cfg.batchSenderAddress(),
                 unsafeBlockSigner: cfg.p2pSequencerAddress(),
                 proposer: cfg.l2OutputOracleProposer(),
-                challenger: cfg.l2OutputOracleChallenger()
-            }),
+                challenger: cfg.l2OutputOracleChallenger(),
+                feeAdmin: msg.sender // TODO: add to op-deployer config
+             }),
             basefeeScalar: cfg.basefeeScalar(),
             blobBasefeeScalar: cfg.blobbasefeeScalar(),
             l2ChainId: cfg.l2ChainID(),

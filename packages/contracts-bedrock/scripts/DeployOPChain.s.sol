@@ -599,8 +599,9 @@ contract DeployOPChain is Script {
             batcher: _doi.batcher(),
             unsafeBlockSigner: _doi.unsafeBlockSigner(),
             proposer: _doi.proposer(),
-            challenger: _doi.challenger()
-        });
+            challenger: _doi.challenger(),
+            feeAdmin: msg.sender // TODO: read from doi
+         });
         OPContractsManager.DeployInput memory deployInput = OPContractsManager.DeployInput({
             roles: roles,
             basefeeScalar: _doi.basefeeScalar(),

@@ -78,7 +78,7 @@ contract SystemConfig is OwnableUpgradeable, ISemver, IGasToken {
     bytes32 public constant UNSAFE_BLOCK_SIGNER_SLOT = keccak256("systemconfig.unsafeblocksigner");
 
     /// @notice Storage slot that the feeAdmin address is stored at.
-    bytes32 public constant FEE_ADMIN_SLOT = keccak256("systemconfig.feeadmin");
+    bytes32 internal constant FEE_ADMIN_SLOT = keccak256("systemconfig.feeadmin");
 
     /// @notice Storage slot that the L1CrossDomainMessenger address is stored at.
     bytes32 public constant L1_CROSS_DOMAIN_MESSENGER_SLOT =

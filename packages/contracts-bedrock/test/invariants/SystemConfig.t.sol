@@ -27,7 +27,7 @@ contract SystemConfig_GasLimitBoundaries_Invariant is Test {
             abi.encodeCall(
                 configImpl.initialize,
                 (
-                    address(0xbeef), // owner
+                    ISystemConfig.Roles({ owner: address(0xbeef), feeAdmin: address(0xbeef) }),
                     2100, // overhead
                     1000000, // scalar
                     bytes32(hex"abcd"), // batcher hash

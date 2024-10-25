@@ -180,7 +180,7 @@ contract Initializer_Test is Bridge_Initializer {
                 initCalldata: abi.encodeCall(
                     systemConfig.initialize,
                     (
-                        address(0xdead),
+                        ISystemConfig.Roles({ owner: address(0xdead), feeAdmin: address(0xdead) }),
                         0,
                         0,
                         bytes32(0),
@@ -216,7 +216,7 @@ contract Initializer_Test is Bridge_Initializer {
                 initCalldata: abi.encodeCall(
                     systemConfig.initialize,
                     (
-                        address(0xdead),
+                        ISystemConfig.Roles({ owner: address(0xdead), feeAdmin: address(0xdead) }),
                         0,
                         0,
                         bytes32(0),

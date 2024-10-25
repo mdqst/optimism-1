@@ -547,8 +547,8 @@ contract SystemConfig_Setters_TestFail is SystemConfig_Init {
 
     /// @dev Tests that `setFeeVaultConfig` reverts if the config type is not a fee vault config.
     function testFuzz_setFeeVaultConfig_badType_reverts(uint8 _type) external {
-        // Ensure that the config type is not a fee vault config.
-        vm.assume(_type != 1 && _type != 2 && _type != 3);
+        // Ensure that _type is a valid ConfigType, but not a fee vault type.
+        vm.assume(_type == 0 || _type > 3 && _type < uint8(type(Types.ConfigType).max));
 
         vm.prank(systemConfig.feeAdmin());
         vm.expectRevert("SystemConfig: ConfigType is is not a Fee Vault Config type");
@@ -669,6 +669,7 @@ contract SystemConfig_Setters_Test is SystemConfig_Init {
 
         bytes memory value = abi.encode(Encoding.encodeFeeVaultConfig(_recipient, _min, withdrawalNetwork));
 
+        address feeAdmin = systemConfig.feeAdmin();
         vm.expectEmit(address(optimismPortal2));
         emit TransactionDeposited(
             0xDeaDDEaDDeAdDeAdDEAdDEaddeAddEAdDEAd0001,
@@ -684,7 +685,7 @@ contract SystemConfig_Setters_Test is SystemConfig_Init {
         );
 
         // TODO: add new role
-        vm.prank(systemConfig.owner());
+        vm.prank(feeAdmin);
         systemConfig.setFeeVaultConfig(feeType, _recipient, _min, withdrawalNetwork);
     }
 

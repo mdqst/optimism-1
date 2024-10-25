@@ -30,6 +30,7 @@ type DeployOPChainInput struct {
 	UnsafeBlockSigner      common.Address
 	Proposer               common.Address
 	Challenger             common.Address
+	// TODO: feeAdmin
 
 	BasefeeScalar     uint32
 	BlobBaseFeeScalar uint32

@@ -456,6 +456,7 @@ contract Specification_Test is CommonTest {
         _addSpec({ _name: "SystemConfig", _sel: ISystemConfig.minimumGasLimit.selector });
         _addSpec({ _name: "SystemConfig", _sel: _getSel("overhead()") });
         _addSpec({ _name: "SystemConfig", _sel: _getSel("owner()") });
+        _addSpec({ _name: "SystemConfig", _sel: _getSel("feeAdmin()") });
         _addSpec({ _name: "SystemConfig", _sel: _getSel("renounceOwnership()"), _auth: Role.SYSTEMCONFIGOWNER });
         _addSpec({ _name: "SystemConfig", _sel: ISystemConfig.resourceConfig.selector });
         _addSpec({ _name: "SystemConfig", _sel: _getSel("scalar()") });
@@ -514,6 +515,7 @@ contract Specification_Test is CommonTest {
         _addSpec({ _name: "SystemConfigInterop", _sel: ISystemConfig.minimumGasLimit.selector });
         _addSpec({ _name: "SystemConfigInterop", _sel: _getSel("overhead()") });
         _addSpec({ _name: "SystemConfigInterop", _sel: _getSel("owner()") });
+        _addSpec({ _name: "SystemConfigInterop", _sel: _getSel("feeAdmin()") });
         _addSpec({ _name: "SystemConfigInterop", _sel: _getSel("renounceOwnership()"), _auth: Role.SYSTEMCONFIGOWNER });
         _addSpec({ _name: "SystemConfigInterop", _sel: ISystemConfig.resourceConfig.selector });
         _addSpec({ _name: "SystemConfigInterop", _sel: _getSel("scalar()") });
