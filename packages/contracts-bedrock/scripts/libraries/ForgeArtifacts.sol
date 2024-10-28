@@ -230,7 +230,7 @@ library ForgeArtifacts {
         );
 
         bytes memory result = Process.run(command);
-        require(result.length > 0, string.concat("ForgeArtifacts:", _contractName, "is not initializable"));
+        require(result.length > 0, string.concat("ForgeArtifacts: ", _contractName, "is not initializable"));
         bytes memory rawSlot = vm.parseJson(string(result));
         slot_ = abi.decode(rawSlot, (StorageSlot));
     }
