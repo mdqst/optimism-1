@@ -567,8 +567,9 @@ contract DeployOPChain is Script {
         require(address(messenger.portal()) == address(_doo.optimismPortalProxy()), "L1xDM-40");
         require(address(messenger.superchainConfig()) == address(_doi.opcmProxy().superchainConfig()), "L1xDM-50");
 
-        vm.expectRevert("CrossDomainMessenger: xDomainMessageSender is not set");
-        messenger.xDomainMessageSender();
+        // TODO: vm.expectRevert is not supported by op-chain-ops, so we can't check this yet.
+        // vm.expectRevert("CrossDomainMessenger: xDomainMessageSender is not set");
+        // messenger.xDomainMessageSender();
     }
 
     function assertValidL1StandardBridge(DeployOPChainInput _doi, DeployOPChainOutput _doo) internal {

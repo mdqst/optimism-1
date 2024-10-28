@@ -614,9 +614,6 @@ contract DeployImplementations is Script {
         });
         setters[2] = opcmSystemConfigSetter(_dii, _dio);
         setters[3] = OPContractsManager.ImplementationSetter({
-            // TODO: rename?
-            // This is used to set the name of the contract in the
-            // `OPContractsManager.implementations.releases` mapping. Can that change between releases?
             name: "OptimismMintableERC20Factory",
             info: OPContractsManager.Implementation(
                 address(_dio.optimismMintableERC20FactoryImpl()), IOptimismMintableERC20Factory.initialize.selector
