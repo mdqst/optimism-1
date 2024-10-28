@@ -418,7 +418,9 @@ contract OptimismPortal2_Test is CommonTest {
         vm.prank(superchainConfig.upgrader());
         optimismPortal2.upgrade(_gasLimit, _calldata);
 
-        console.log("_gasLimit:", _gasLimit);
+        // Advance the block to ensure that the deposit transaction is processed in the next block, so that we
+        // aren't limited by the resource limit consumed by the previous call.
+        vm.roll(block.number + 1);
         vm.prank(Constants.DEPOSITOR_ACCOUNT, Constants.DEPOSITOR_ACCOUNT);
         optimismPortal2.depositTransaction({
             _to: Predeploys.PROXY_ADMIN,
