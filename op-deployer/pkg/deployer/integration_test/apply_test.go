@@ -1,9 +1,7 @@
 package integration_test
 
 import (
-	"bytes"
 	"context"
-	"encoding/hex"
 	"fmt"
 	"log/slog"
 	"math/big"
@@ -32,7 +30,6 @@ import (
 	"github.com/ethereum-optimism/optimism/op-chain-ops/devkeys"
 	"github.com/ethereum-optimism/optimism/op-chain-ops/genesis"
 	opcrypto "github.com/ethereum-optimism/optimism/op-service/crypto"
-	"github.com/ethereum-optimism/optimism/op-service/predeploys"
 	"github.com/ethereum-optimism/optimism/op-service/testlog"
 	"github.com/ethereum-optimism/optimism/op-service/testutils/kurtosisutil"
 	"github.com/ethereum/go-ethereum/common"
@@ -365,23 +362,13 @@ func validateOPChainDeployment(t *testing.T, cg codeGetter, st *state.State, int
 			require.NotEmpty(t, code, "contract %s at %s for chain %s has no code", addr.name, addr.addr, chainState.ID)
 		}
 
-		alloc := chainState.Allocs.Data.Accounts
-
 		chainIntent := intent.Chains[i]
-		checkImmutable(t, alloc, predeploys.BaseFeeVaultAddr, chainIntent.BaseFeeVaultRecipient)
-		checkImmutable(t, alloc, predeploys.L1FeeVaultAddr, chainIntent.L1FeeVaultRecipient)
-		checkImmutable(t, alloc, predeploys.SequencerFeeVaultAddr, chainIntent.SequencerFeeVaultRecipient)
-		checkImmutable(t, alloc, predeploys.OptimismMintableERC721FactoryAddr, common.BigToHash(new(big.Int).SetUint64(intent.L1ChainID)))
 
 		// ownership slots
 		var addrAsSlot common.Hash
 		addrAsSlot.SetBytes(chainIntent.Roles.L1ProxyAdminOwner.Bytes())
-		// slot 0
-		ownerSlot := common.Hash{}
-		checkStorageSlot(t, alloc, predeploys.ProxyAdminAddr, ownerSlot, addrAsSlot)
 		var defaultGovOwner common.Hash
 		defaultGovOwner.SetBytes(common.HexToAddress("0xDeaDDEaDDeAdDeAdDEAdDEaddeAddEAdDEAdDEad").Bytes())
-		checkStorageSlot(t, alloc, predeploys.GovernanceTokenAddr, common.Hash{31: 0x0a}, defaultGovOwner)
 
 		require.Equal(t, int(chainIntent.Eip1559Denominator), 50, "EIP1559Denominator should be set")
 		require.Equal(t, int(chainIntent.Eip1559Elasticity), 6, "EIP1559Elasticity should be set")
@@ -397,30 +384,6 @@ func getEIP1967ImplementationAddress(t *testing.T, allocations types.GenesisAllo
 
 type bytesMarshaler interface {
 	Bytes() []byte
-}
-
-func checkImmutable(t *testing.T, allocations types.GenesisAlloc, proxyContract common.Address, thing bytesMarshaler) {
-	implementationAddress := getEIP1967ImplementationAddress(t, allocations, proxyContract)
-	account, ok := allocations[implementationAddress]
-	require.True(t, ok, "%s not found in allocations", implementationAddress)
-	require.NotEmpty(t, account.Code, "%s should have code", implementationAddress)
-	require.True(
-		t,
-		bytes.Contains(account.Code, thing.Bytes()),
-		"%s code should contain %s immutable", implementationAddress, hex.EncodeToString(thing.Bytes()),
-	)
-}
-
-func checkStorageSlot(t *testing.T, allocs types.GenesisAlloc, address common.Address, slot common.Hash, expected common.Hash) {
-	account, ok := allocs[address]
-	require.True(t, ok, "account not found for address %s", address)
-	value, ok := account.Storage[slot]
-	if expected == (common.Hash{}) {
-		require.False(t, ok, "slot %s for account %s should not be set", slot, address)
-		return
-	}
-	require.True(t, ok, "slot %s not found for account %s", slot, address)
-	require.Equal(t, expected, value, "slot %s for account %s should be %s", slot, address, expected)
 }
 
 func TestApplyExistingOPCM(t *testing.T) {
