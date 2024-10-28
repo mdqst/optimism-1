@@ -7,13 +7,20 @@ import { WETH98 } from "src/universal/WETH98.sol";
 // Libraries
 import { Predeploys } from "src/libraries/Predeploys.sol";
 import { Preinstalls } from "src/libraries/Preinstalls.sol";
+import { SafeSend } from "src/universal/SafeSend.sol";
 
 // Interfaces
 import { ISemver } from "src/universal/interfaces/ISemver.sol";
+import { IL2ToL2CrossDomainMessenger } from "src/L2/interfaces/IL2ToL2CrossDomainMessenger.sol";
 import { IL1Block } from "src/L2/interfaces/IL1Block.sol";
 import { IETHLiquidity } from "src/L2/interfaces/IETHLiquidity.sol";
 import { ICrosschainERC20 } from "src/L2/interfaces/ICrosschainERC20.sol";
 import { Unauthorized, NotCustomGasToken } from "src/libraries/errors/CommonErrors.sol";
+
+error CallerNotL2ToL2CrossDomainMessenger();
+
+/// @notice Thrown when attempting to relay a message and the cross domain message sender is not `address(this)`
+error InvalidCrossDomainSender();
 
 /// @custom:proxied true
 /// @custom:predeploy 0x4200000000000000000000000000000000000024
@@ -22,6 +29,10 @@ import { Unauthorized, NotCustomGasToken } from "src/libraries/errors/CommonErro
 ///         within the superchain. SuperchainWETH can be converted into native ETH on chains that
 ///         do not use a custom gas token.
 contract SuperchainWETH is WETH98, ICrosschainERC20, ISemver {
+    event SendETH(address indexed from, address indexed to, uint256 amount, uint256 destination);
+
+    event RelayETH(address indexed from, address indexed to, uint256 amount, uint256 source);
+
     /// @notice Semantic version.
     /// @custom:semver 1.0.0-beta.9
     string public constant version = "1.0.0-beta.9";
@@ -90,5 +101,52 @@ contract SuperchainWETH is WETH98, ICrosschainERC20, ISemver {
         }
 
         emit CrosschainBurn(_from, _amount);
+    }
+
+    /// @notice Sends ETH to some target address on another chain.
+    /// @param _to      Address to send tokens to.
+    /// @param _chainId  Chain ID of the destination chain.
+    function sendETH(address _to, uint256 _chainId) public payable {
+        if (IL1Block(Predeploys.L1_BLOCK_ATTRIBUTES).isCustomGasToken()) {
+            revert NotCustomGasToken();
+        }
+
+        // Burn to ETHLiquidity contract.
+        IETHLiquidity(Predeploys.ETH_LIQUIDITY).burn{ value: msg.value }();
+
+        // Send message to other chain.
+        IL2ToL2CrossDomainMessenger(Predeploys.L2_TO_L2_CROSS_DOMAIN_MESSENGER).sendMessage({
+            _destination: _chainId,
+            _target: address(this),
+            _message: abi.encodeCall(this.relayETH, (msg.sender, _to, msg.value))
+        });
+
+        // Emit event.
+        emit SendETH(msg.sender, _to, msg.value, _chainId);
+    }
+
+    /// @notice Relays ETH received from another chain.
+    /// @param _from    Address of the msg.sender of sendETH on the source chain.
+    /// @param _to     Address to relay tokens to.
+    /// @param _amount     Amount of tokens to relay.
+    function relayETH(address _from, address _to, uint256 _amount) external {
+        // Receive message from other chain.
+        IL2ToL2CrossDomainMessenger messenger = IL2ToL2CrossDomainMessenger(Predeploys.L2_TO_L2_CROSS_DOMAIN_MESSENGER);
+        if (msg.sender != address(messenger)) revert CallerNotL2ToL2CrossDomainMessenger();
+        if (messenger.crossDomainMessageSender() != address(this)) revert InvalidCrossDomainSender();
+        if (IL1Block(Predeploys.L1_BLOCK_ATTRIBUTES).isCustomGasToken()) {
+            revert NotCustomGasToken();
+        }
+
+        // Mint from ETHLiquidity contract.
+        IETHLiquidity(Predeploys.ETH_LIQUIDITY).mint(_amount);
+
+        // Get source chain ID.
+        uint256 source = messenger.crossDomainMessageSource();
+
+        new SafeSend{ value: _amount }(payable(_to));
+
+        // Emit event.
+        emit RelayETH(_from, _to, _amount, source);
     }
 }
