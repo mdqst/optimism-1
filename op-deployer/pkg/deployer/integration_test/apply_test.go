@@ -28,12 +28,10 @@ import (
 	"github.com/holiman/uint256"
 
 	"github.com/ethereum-optimism/optimism/op-chain-ops/devkeys"
-	"github.com/ethereum-optimism/optimism/op-chain-ops/genesis"
 	opcrypto "github.com/ethereum-optimism/optimism/op-service/crypto"
 	"github.com/ethereum-optimism/optimism/op-service/testlog"
 	"github.com/ethereum-optimism/optimism/op-service/testutils/kurtosisutil"
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/stretchr/testify/require"
 )
@@ -373,13 +371,6 @@ func validateOPChainDeployment(t *testing.T, cg codeGetter, st *state.State, int
 		require.Equal(t, int(chainIntent.Eip1559Denominator), 50, "EIP1559Denominator should be set")
 		require.Equal(t, int(chainIntent.Eip1559Elasticity), 6, "EIP1559Elasticity should be set")
 	}
-}
-
-func getEIP1967ImplementationAddress(t *testing.T, allocations types.GenesisAlloc, proxyAddress common.Address) common.Address {
-	storage := allocations[proxyAddress].Storage
-	storageValue := storage[genesis.ImplementationSlot]
-	require.NotEmpty(t, storageValue, "Implementation address for %s should be set", proxyAddress)
-	return common.HexToAddress(storageValue.Hex())
 }
 
 type bytesMarshaler interface {
