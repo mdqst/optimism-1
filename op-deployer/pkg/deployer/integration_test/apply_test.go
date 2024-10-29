@@ -373,10 +373,6 @@ func validateOPChainDeployment(t *testing.T, cg codeGetter, st *state.State, int
 	}
 }
 
-type bytesMarshaler interface {
-	Bytes() []byte
-}
-
 func TestApplyExistingOPCM(t *testing.T) {
 	anvil.Test(t)
 
