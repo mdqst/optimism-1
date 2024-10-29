@@ -498,9 +498,7 @@ contract Specification_Test is CommonTest {
         _addSpec({ _name: "SystemConfig", _sel: _getSel("basefeeScalar()") });
         _addSpec({ _name: "SystemConfig", _sel: _getSel("blobbasefeeScalar()") });
         _addSpec({ _name: "SystemConfig", _sel: _getSel("maximumGasLimit()") });
-        _addSpec({ _name: "SystemConfig", _sel: _getSel("setBaseFeeVaultConfig(address,uint256,uint8)") });
-        _addSpec({ _name: "SystemConfig", _sel: _getSel("setL1FeeVaultConfig(address,uint256,uint8)") });
-        _addSpec({ _name: "SystemConfig", _sel: _getSel("setSequencerFeeVaultConfig(address,uint256,uint8)") });
+        _addSpec({ _name: "SystemConfig", _sel: _getSel("setFeeVaultConfig(uint8,address,uint256,uint8)") });
 
         // SystemConfigInterop
         _addSpec({ _name: "SystemConfigInterop", _sel: _getSel("UNSAFE_BLOCK_SIGNER_SLOT()") });
@@ -512,6 +510,12 @@ contract Specification_Test is CommonTest {
         _addSpec({ _name: "SystemConfigInterop", _sel: _getSel("eip1559Elasticity()") });
         _addSpec({ _name: "SystemConfigInterop", _sel: ISystemConfig.initialize.selector });
         _addSpec({ _name: "SystemConfigInterop", _sel: ISystemConfig.minimumGasLimit.selector });
+        _addSpec({
+            _name: "SystemConfigInterop",
+            _sel: _getSel(
+                "initialize((address,address),uint32,uint32,bytes32,uint64,address,(uint32,uint8,uint8,uint32,uint32,uint128),address,(address,address,address,address,address,address,address),address)"
+            )
+        });
         _addSpec({ _name: "SystemConfigInterop", _sel: _getSel("overhead()") });
         _addSpec({ _name: "SystemConfigInterop", _sel: _getSel("owner()") });
         _addSpec({ _name: "SystemConfigInterop", _sel: _getSel("feeAdmin()") });
@@ -584,15 +588,7 @@ contract Specification_Test is CommonTest {
             _auth: Role.DEPENDENCYMANAGER
         });
         _addSpec({ _name: "SystemConfigInterop", _sel: _getSel("dependencyManager()") });
-        _addSpec({
-            _name: "SystemConfigInterop",
-            _sel: _getSel(
-                "initialize(address,uint32,uint32,bytes32,uint64,address,(uint32,uint8,uint8,uint32,uint32,uint128),address,(address,address,address,address,address,address,address),address)"
-            )
-        });
-        _addSpec({ _name: "SystemConfigInterop", _sel: _getSel("setBaseFeeVaultConfig(address,uint256,uint8)") });
-        _addSpec({ _name: "SystemConfigInterop", _sel: _getSel("setL1FeeVaultConfig(address,uint256,uint8)") });
-        _addSpec({ _name: "SystemConfigInterop", _sel: _getSel("setSequencerFeeVaultConfig(address,uint256,uint8)") });
+        _addSpec({ _name: "SystemConfigInterop", _sel: _getSel("setFeeVaultConfig(uint8,address,uint256,uint8)") });
 
         // ProxyAdmin
         _addSpec({ _name: "ProxyAdmin", _sel: _getSel("addressManager()") });
