@@ -1,24 +1,10 @@
 [
   {
-    "bytes": "1",
-    "label": "_initialized",
+    "bytes": "32",
+    "label": "spacer_0_0_32",
     "offset": 0,
     "slot": "0",
-    "type": "uint8"
-  },
-  {
-    "bytes": "1",
-    "label": "_initializing",
-    "offset": 1,
-    "slot": "0",
-    "type": "bool"
-  },
-  {
-    "bytes": "30",
-    "label": "spacer_0_2_30",
-    "offset": 2,
-    "slot": "0",
-    "type": "bytes30"
+    "type": "bytes32"
   },
   {
     "bytes": "20",
@@ -56,9 +42,23 @@
     "type": "uint256[45]"
   },
   {
+    "bytes": "1",
+    "label": "_initialized",
+    "offset": 0,
+    "slot": "50",
+    "type": "uint8"
+  },
+  {
+    "bytes": "1",
+    "label": "_initializing",
+    "offset": 1,
+    "slot": "50",
+    "type": "bool"
+  },
+  {
     "bytes": "20",
     "label": "superchainConfig",
-    "offset": 0,
+    "offset": 2,
     "slot": "50",
     "type": "contract ISuperchainConfig"
   },

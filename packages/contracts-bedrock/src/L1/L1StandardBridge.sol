@@ -24,7 +24,7 @@ import { Initializable } from "@openzeppelin/contracts/proxy/utils/Initializable
 ///         NOTE: this contract is not intended to support all variations of ERC20 tokens. Examples
 ///         of some token types that may not be properly supported by this contract include, but are
 ///         not limited to: tokens with transfer fees, rebasing tokens, and tokens with blocklists.
-contract L1StandardBridge is Initializable, StandardBridge, ISemver {
+contract L1StandardBridge is StandardBridge, ISemver, Initializable {
     /// @custom:legacy
     /// @notice Emitted whenever a deposit of ETH from L1 into L2 is initiated.
     /// @param from      Address of the depositor.
