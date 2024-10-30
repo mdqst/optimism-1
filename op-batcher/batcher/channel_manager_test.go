@@ -505,11 +505,11 @@ func TestChannelManager_PruneChannels(t *testing.T) {
 	cfg.InitNoneCompressor()
 	m := NewChannelManager(l, metrics.NoopMetrics, cfg, defaultTestRollupConfig)
 
-	A, err := newChannel(l, metrics.NoopMetrics, cfg, m.rollupCfg, 0)
+	A, err := newChannelWithChannelOut(l, metrics.NoopMetrics, cfg, m.rollupCfg, 0)
 	require.NoError(t, err)
-	B, err := newChannel(l, metrics.NoopMetrics, cfg, m.rollupCfg, 0)
+	B, err := newChannelWithChannelOut(l, metrics.NoopMetrics, cfg, m.rollupCfg, 0)
 	require.NoError(t, err)
-	C, err := newChannel(l, metrics.NoopMetrics, cfg, m.rollupCfg, 0)
+	C, err := newChannelWithChannelOut(l, metrics.NoopMetrics, cfg, m.rollupCfg, 0)
 	require.NoError(t, err)
 
 	m.channelQueue = []*channel{A, B, C}
