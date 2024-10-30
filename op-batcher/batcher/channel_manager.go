@@ -131,8 +131,16 @@ func (s *channelManager) rewindToBlockWithHash(blockHash common.Hash) {
 // to point at the first block added to the provided channel,
 // and clears the channelQueue and currentChannel.
 func (s *channelManager) handleChannelTimeout(c *channel) {
-	blockHash := c.channelBuilder.blocks[0].Hash()
-	s.rewindToBlockWithHash(blockHash)
+	if len(c.channelBuilder.blocks) > 0 {
+		// This is usually true, but there is an edge case
+		// where a channel timed out before any blocks got added.
+		// In that case we end up with an empty frame (header only),
+		// and there are no blocks to requeue.
+		blockHash := c.channelBuilder.blocks[0].Hash()
+		s.rewindToBlockWithHash(blockHash)
+	} else {
+		s.log.Debug("channelManager.handleChannelTimeout: channel had no blocks")
+	}
 	s.channelQueue = s.channelQueue[:0]
 	s.currentChannel = nil
 }
