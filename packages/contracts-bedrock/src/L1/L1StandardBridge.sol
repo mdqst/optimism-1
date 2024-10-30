@@ -82,7 +82,7 @@ contract L1StandardBridge is StandardBridge, ISemver, Initializable {
     /// @custom:spacer
     /// @notice Spacer to fill the remainder of the _initialized slot, preventing the superchainConfig
     ///         address from being packed with it.
-    bytes32 private spacer_49_2_30;
+    bytes30 private spacer_49_2_30;
 
     /// @notice Address of the SuperchainConfig contract.
     ISuperchainConfig public superchainConfig;

@@ -140,7 +140,7 @@ abstract contract CrossDomainMessenger is CrossDomainMessengerLegacySpacer {
     address private xDomainMsgSender;
 
     /// @notice Spacer to ensure that there is no collision with the xDomainMsgSender slot.
-    bytes12 private spacer_251_20_12;
+    bytes12 private spacer_208_20_12;
 
     /// @notice Reserve extra slots in the storage layout for future upgrades.
     ///         A gap size of 40 was chosen here, so that the first slot used in a child contract

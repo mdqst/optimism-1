@@ -56,31 +56,31 @@
     "type": "bool"
   },
   {
-    "bytes": "32",
+    "bytes": "30",
     "label": "spacer_49_2_30",
-    "offset": 0,
-    "slot": "50",
-    "type": "bytes32"
+    "offset": 2,
+    "slot": "49",
+    "type": "bytes30"
   },
   {
     "bytes": "20",
     "label": "superchainConfig",
     "offset": 0,
-    "slot": "51",
+    "slot": "50",
     "type": "contract ISuperchainConfig"
   },
   {
     "bytes": "20",
     "label": "systemConfig",
     "offset": 0,
-    "slot": "52",
+    "slot": "51",
     "type": "contract ISystemConfig"
   },
   {
     "bytes": "20",
     "label": "crossDomainMessenger",
     "offset": 0,
-    "slot": "53",
+    "slot": "52",
     "type": "contract ICrossDomainMessenger"
   }
 ]
