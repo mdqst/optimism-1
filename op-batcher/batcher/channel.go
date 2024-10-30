@@ -161,7 +161,7 @@ func (s *channel) ID() derive.ChannelID {
 func (s *channel) NextTxData() txData {
 	nf := s.cfg.MaxFramesPerTx()
 	txdata := txData{frames: make([]frameData, 0, nf), asBlob: s.cfg.UseBlobs}
-	for i := 0; i < nf && s.channelBuilder.HasFrame(); i++ {
+	for i := 0; i < nf && s.channelBuilder.HasPendingFrame(); i++ {
 		frame := s.channelBuilder.NextFrame()
 		txdata.frames = append(txdata.frames, frame)
 	}
@@ -176,7 +176,7 @@ func (s *channel) NextTxData() txData {
 func (s *channel) HasTxData() bool {
 	if s.IsFull() || // If the channel is full, we should start to submit it
 		!s.cfg.UseBlobs { // If using calldata, we only send one frame per tx
-		return s.channelBuilder.HasFrame()
+		return s.channelBuilder.HasPendingFrame()
 	}
 	// Collect enough frames if channel is not full yet
 	return s.channelBuilder.PendingFrames() >= int(s.cfg.MaxFramesPerTx())

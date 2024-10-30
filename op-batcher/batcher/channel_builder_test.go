@@ -625,11 +625,11 @@ func TestChannelBuilder_FullShadowCompressor(t *testing.T) {
 
 	require.NoError(cb.OutputFrames())
 
-	require.True(cb.HasFrame())
+	require.True(cb.HasPendingFrame())
 	f := cb.NextFrame()
 	require.Less(len(f.data), int(cfg.MaxFrameSize)) // would fail without fix, full frame
 
-	require.False(cb.HasFrame(), "no leftover frame expected") // would fail without fix
+	require.False(cb.HasPendingFrame(), "no leftover frame expected") // would fail without fix
 }
 
 func ChannelBuilder_AddBlock(t *testing.T, batchType uint) {
@@ -858,7 +858,7 @@ func ChannelBuilder_PendingFrames_TotalFrames(t *testing.T, batchType uint) {
 
 	// empty queue
 	for pf := nf - 1; pf >= 0; pf-- {
-		require.True(cb.HasFrame())
+		require.True(cb.HasPendingFrame())
 		_ = cb.NextFrame()
 		require.Equal(cb.PendingFrames(), pf)
 		require.Equal(cb.TotalFrames(), nf)
@@ -932,7 +932,7 @@ func ChannelBuilder_OutputBytes(t *testing.T, batchType uint) {
 	require.Greater(cb.PendingFrames(), 1)
 
 	var flen int
-	for cb.HasFrame() {
+	for cb.HasPendingFrame() {
 		f := cb.NextFrame()
 		flen += len(f.data)
 	}
