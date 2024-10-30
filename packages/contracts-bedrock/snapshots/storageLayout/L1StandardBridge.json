@@ -35,45 +35,45 @@
     "type": "address"
   },
   {
-    "bytes": "1440",
+    "bytes": "1408",
     "label": "__gap",
     "offset": 0,
     "slot": "5",
-    "type": "uint256[45]"
+    "type": "uint256[44]"
   },
   {
     "bytes": "1",
     "label": "_initialized",
     "offset": 0,
-    "slot": "50",
+    "slot": "49",
     "type": "uint8"
   },
   {
     "bytes": "1",
     "label": "_initializing",
     "offset": 1,
-    "slot": "50",
+    "slot": "49",
     "type": "bool"
   },
   {
     "bytes": "20",
     "label": "superchainConfig",
     "offset": 2,
-    "slot": "50",
+    "slot": "49",
     "type": "contract ISuperchainConfig"
   },
   {
     "bytes": "20",
     "label": "systemConfig",
     "offset": 0,
-    "slot": "51",
+    "slot": "50",
     "type": "contract ISystemConfig"
   },
   {
     "bytes": "20",
     "label": "crossDomainMessenger",
     "offset": 0,
-    "slot": "52",
+    "slot": "51",
     "type": "contract ICrossDomainMessenger"
   }
 ]

@@ -46,9 +46,9 @@ abstract contract StandardBridge {
     address private spacer_4_0_20;
 
     /// @notice Reserve extra slots (to a total of 50) in the storage layout for future upgrades.
-    ///         A gap size of 45 was chosen here, so that the first slot used in a child contract
-    ///         would be a multiple of 50.
-    uint256[45] private __gap;
+    ///         The gap size was previously 45, but is now 44, allowing for the initializer slot to be
+    ///         included in the L1StandardBridge contract without breaking its storage layout.
+    uint256[44] private __gap;
 
     /// @notice Emitted when an ETH bridge is initiated to the other chain.
     /// @param from      Address of the sender.
