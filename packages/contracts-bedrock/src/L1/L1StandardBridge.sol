@@ -114,7 +114,8 @@ contract L1StandardBridge is StandardBridge, ISemver, Initializable {
         return StandardBridge(payable(Predeploys.L2_STANDARD_BRIDGE));
     }
 
-    // TODO:
+    /// @notice Getter function for the messenger contract.
+    /// @return Contract of the messenger on this domain.
     function messenger() public view override returns (ICrossDomainMessenger) {
         return ICrossDomainMessenger(crossDomainMessenger);
     }

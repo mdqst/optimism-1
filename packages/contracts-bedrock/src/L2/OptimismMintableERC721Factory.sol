@@ -42,7 +42,10 @@ contract OptimismMintableERC721Factory is ISemver {
         return abi.decode(data, (uint256));
     }
 
-    /// @notice TODO: type should be more strict
+    /// @notice Getter function for the bridge contract.
+    ///         Public getter is legacy and will be removed in the future. Use `bridge()` instead.
+    /// @return Bridge contract on this domain.
+    /// @custom:legacy
     function BRIDGE() external pure returns (IL2ERC721Bridge) {
         return bridge();
     }

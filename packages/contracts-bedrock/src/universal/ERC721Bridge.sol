@@ -67,7 +67,8 @@ abstract contract ERC721Bridge {
         _;
     }
 
-    /// @notice
+    /// @notice Getter function for the messenger contract.
+    /// @return Messenger contract on this domain.
     function messenger() public view virtual returns (ICrossDomainMessenger);
 
     /// @notice Legacy getter for messenger contract.
@@ -78,7 +79,8 @@ abstract contract ERC721Bridge {
         return messenger();
     }
 
-    /// @notice
+    /// @notice Getter function for the other bridge.
+    /// @return Contract of the bridge on the other network.
     function otherBridge() public view virtual returns (ERC721Bridge);
 
     /// @notice Legacy getter for other bridge address.

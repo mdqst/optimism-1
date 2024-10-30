@@ -19,7 +19,8 @@ abstract contract FeeVault {
     /// @notice The minimum gas limit for the FeeVault withdrawal transaction.
     uint32 internal constant WITHDRAWAL_MIN_GAS = 400_000;
 
-    /// @notice
+    /// @notice Internal getter function for the L1Block contract.
+    /// @return Contract of the L1Block on this domain.
     function L1_BLOCK() internal pure returns (IL1Block) {
         return IL1Block(Predeploys.L1_BLOCK_ATTRIBUTES);
     }

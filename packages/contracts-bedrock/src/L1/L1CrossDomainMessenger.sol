@@ -59,7 +59,8 @@ contract L1CrossDomainMessenger is CrossDomainMessenger, ISemver, Initializable 
         systemConfig = _systemConfig;
     }
 
-    /// @notice
+    /// @notice Getter function for the other messenger.
+    /// @return Contract of the messenger on the other network.
     function otherMessenger() public pure override returns (CrossDomainMessenger) {
         return CrossDomainMessenger(Predeploys.L2_CROSS_DOMAIN_MESSENGER);
     }

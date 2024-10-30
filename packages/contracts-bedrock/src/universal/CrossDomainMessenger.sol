@@ -317,7 +317,8 @@ abstract contract CrossDomainMessenger is CrossDomainMessengerLegacySpacer {
         return xDomainMsgSender;
     }
 
-    /// @notice
+    /// @notice Setter function for the cross-domain message sender.
+    /// @param _address Address of the sender of the currently executing message on the other chain.
     function setCrossDomainMessageSender(address _address) internal {
         xDomainMsgSender = _address;
     }

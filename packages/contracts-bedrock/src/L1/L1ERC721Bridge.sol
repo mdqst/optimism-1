@@ -48,12 +48,14 @@ contract L1ERC721Bridge is ERC721Bridge, Initializable, ISemver {
         crossDomainMessenger = _messenger;
     }
 
-    /// @notice
+    /// @notice Getter function for the CrossDomainMessenger contract on this chain.
+    /// @return Contract of the CrossDomainMessenger on this chain.
     function messenger() public view override returns (ICrossDomainMessenger) {
         return ICrossDomainMessenger(crossDomainMessenger);
     }
 
-    /// @notice
+    /// @notice Getter function for the other bridge.
+    /// @return Contract of the bridge on the other network.
     function otherBridge() public pure override returns (ERC721Bridge) {
         return ERC721Bridge(payable(Predeploys.L2_ERC721_BRIDGE));
     }

@@ -15,12 +15,14 @@ contract L1OptimismMintableERC20Factory is OptimismMintableERC20Factory, Initial
         _disableInitializers();
     }
 
-    /// @notice
+    /// @notice Initializes the contract.
+    /// @param _bridge Contract of the bridge on this domain.
     function initialize(address _bridge) public initializer {
         standardBridge = _bridge;
     }
 
-    /// @notice
+    /// @notice Getter function for the bridge contract.
+    /// @return Contract of the bridge on this domain.
     function bridge() public view virtual override returns (address) {
         return standardBridge;
     }
