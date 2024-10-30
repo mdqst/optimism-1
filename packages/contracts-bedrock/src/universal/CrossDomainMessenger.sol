@@ -11,7 +11,7 @@ import { Constants } from "src/libraries/Constants.sol";
 /// @notice Contract only exists to add a spacer to the CrossDomainMessenger where the
 ///         libAddressManager variable, PausableUpgradable and OwnableUpgradeable
 ///         variables used to exist.
-contract CrossDomainMessengerLegacySpacer {
+abstract contract CrossDomainMessengerLegacySpacer {
     /// @custom:legacy
     /// @custom:spacer libAddressManager
     /// @notice Spacer for backwards compatibility.
