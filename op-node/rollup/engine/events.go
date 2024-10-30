@@ -98,6 +98,15 @@ func (ev PendingSafeUpdateEvent) String() string {
 	return "pending-safe-update"
 }
 
+type InteropPendingSafeChangedEvent struct {
+	Ref         eth.L2BlockRef
+	DerivedFrom eth.L1BlockRef
+}
+
+func (ev InteropPendingSafeChangedEvent) String() string {
+	return "interop-pending-safe-changed"
+}
+
 // PromotePendingSafeEvent signals that a block can be marked as pending-safe, and/or safe.
 type PromotePendingSafeEvent struct {
 	Ref         eth.L2BlockRef
@@ -227,6 +236,22 @@ type PromoteFinalizedEvent struct {
 
 func (ev PromoteFinalizedEvent) String() string {
 	return "promote-finalized"
+}
+
+// FinalizedUpdateEvent signals that a block has been marked as finalized.
+type FinalizedUpdateEvent struct {
+	Ref eth.L2BlockRef
+}
+
+func (ev FinalizedUpdateEvent) String() string {
+	return "finalized-update"
+}
+
+// RequestFinalizedUpdateEvent signals that a FinalizedUpdateEvent is needed.
+type RequestFinalizedUpdateEvent struct{}
+
+func (ev RequestFinalizedUpdateEvent) String() string {
+	return "request-finalized-update"
 }
 
 // CrossUpdateRequestEvent triggers update events to be emitted, repeating the current state.
@@ -391,6 +416,11 @@ func (d *EngDeriver) OnEvent(ev event.Event) bool {
 				DerivedFrom: x.DerivedFrom,
 			})
 		}
+		// TODO(#12646): temporary interop work-around, assumes Holocene local-safe progression behavior.
+		d.emitter.Emit(InteropPendingSafeChangedEvent{
+			Ref:         x.Ref,
+			DerivedFrom: x.DerivedFrom,
+		})
 	case PromoteLocalSafeEvent:
 		d.ec.SetLocalSafeHead(x.Ref)
 		d.emitter.Emit(LocalSafeUpdateEvent(x))
@@ -419,8 +449,11 @@ func (d *EngDeriver) OnEvent(ev event.Event) bool {
 			return true
 		}
 		d.ec.SetFinalizedHead(x.Ref)
+		d.emitter.Emit(FinalizedUpdateEvent(x))
 		// Try to apply the forkchoice changes
 		d.emitter.Emit(TryUpdateEngineEvent{})
+	case RequestFinalizedUpdateEvent:
+		d.emitter.Emit(FinalizedUpdateEvent{Ref: d.ec.Finalized()})
 	case CrossUpdateRequestEvent:
 		if x.CrossUnsafe {
 			d.emitter.Emit(CrossUnsafeUpdateEvent{
