@@ -115,9 +115,12 @@ func (s *channelManager) TxConfirmed(_id txID, inclusionBlock eth.BlockID) {
 	s.log.Debug("marked transaction as confirmed", "id", id, "block", inclusionBlock)
 }
 
+// rewindToBlockWithHash updates the blockCursor to point at
+// the block with the supplied hash, only if that block exists
+// in the block queue and the blockCursor is ahead of it.
 func (s *channelManager) rewindToBlockWithHash(blockHash common.Hash) {
 	for i, b := range s.blocks {
-		if b.Hash() == blockHash {
+		if b.Hash() == blockHash && i < s.blockCursor {
 			s.blockCursor = i
 			break
 		}
