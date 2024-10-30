@@ -401,7 +401,7 @@ contract DeployImplementationsOutput is BaseDeployIO {
     function assertValidL1CrossDomainMessengerImpl(DeployImplementationsInput) internal view {
         IL1CrossDomainMessenger messenger = l1CrossDomainMessengerImpl();
 
-        DeployUtils.assertInitialized({ _contractAddress: address(messenger), _slot: 252, _offset: 0 });
+        DeployUtils.assertInitialized({ _contractAddress: address(messenger), _slot: 250, _offset: 0 });
 
         require(address(messenger.OTHER_MESSENGER()) == Predeploys.L2_CROSS_DOMAIN_MESSENGER, "L1xDM-10");
         require(address(messenger.otherMessenger()) == Predeploys.L2_CROSS_DOMAIN_MESSENGER, "L1xDM-20");
@@ -425,7 +425,7 @@ contract DeployImplementationsOutput is BaseDeployIO {
     function assertValidL1StandardBridgeImpl(DeployImplementationsInput) internal view {
         IL1StandardBridge bridge = l1StandardBridgeImpl();
 
-        DeployUtils.assertInitialized({ _contractAddress: address(bridge), _slot: 0, _offset: 0 });
+        DeployUtils.assertInitialized({ _contractAddress: address(bridge), _slot: 49, _offset: 0 });
 
         require(address(bridge.MESSENGER()) == address(0), "L1SB-10");
         require(address(bridge.messenger()) == address(0), "L1SB-20");
