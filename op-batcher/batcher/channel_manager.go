@@ -438,6 +438,8 @@ func (s *channelManager) Requeue(newCfg ChannelConfig) {
 		// and there are no blocks to requeue.
 		blockHash := channelToDiscard.channelBuilder.blocks[0].Hash()
 		s.rewindToBlockWithHash(blockHash)
+	} else {
+		s.log.Debug("channelManager.Requeue: discarded channel had no blocks")
 	}
 	s.currentChannel = nil
 	// Setting the defaultCfg will cause new channels
