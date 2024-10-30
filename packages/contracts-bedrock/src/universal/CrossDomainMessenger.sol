@@ -134,11 +134,6 @@ abstract contract CrossDomainMessenger is CrossDomainMessengerLegacySpacer {
     /// @notice Spacer for backwards compatibility.
     address private spacer_207_0_20;
 
-    /// @notice Reserve extra slots in the storage layout for future upgrades.
-    ///         A gap size of 43 was chosen here, so that the first slot used in a child contract
-    ///         would be 1 plus a multiple of 50.
-    uint256[43] private __gap;
-
     /// @notice Address of the sender of the currently executing message on the other chain. If the
     ///         value of this variable is address(0) then no message is currently being executed.
     ///         Use the xDomainMessageSender getter which will throw an error if this is the case.
@@ -146,6 +141,11 @@ abstract contract CrossDomainMessenger is CrossDomainMessengerLegacySpacer {
 
     /// @notice Spacer to ensure that there is no collision with the xDomainMsgSender slot.
     bytes12 private spacer_251_20_12;
+
+    /// @notice Reserve extra slots in the storage layout for future upgrades.
+    ///         A gap size of 40 was chosen here, so that the first slot used in a child contract
+    ///         would be 1 plus a multiple of 50.
+    uint256[41] private __gap;
 
     /// @notice Emitted whenever a message is sent to the other chain.
     /// @param target       Address of the recipient of the message.

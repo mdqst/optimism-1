@@ -112,66 +112,66 @@
     "type": "address"
   },
   {
-    "bytes": "1376",
-    "label": "__gap",
-    "offset": 0,
-    "slot": "208",
-    "type": "uint256[43]"
-  },
-  {
     "bytes": "20",
     "label": "xDomainMsgSender",
     "offset": 0,
-    "slot": "251",
+    "slot": "208",
     "type": "address"
   },
   {
     "bytes": "12",
     "label": "spacer_251_20_12",
     "offset": 20,
-    "slot": "251",
+    "slot": "208",
     "type": "bytes12"
+  },
+  {
+    "bytes": "1312",
+    "label": "__gap",
+    "offset": 0,
+    "slot": "209",
+    "type": "uint256[41]"
   },
   {
     "bytes": "1",
     "label": "_initialized",
     "offset": 0,
-    "slot": "252",
+    "slot": "250",
     "type": "uint8"
   },
   {
     "bytes": "1",
     "label": "_initializing",
     "offset": 1,
-    "slot": "252",
+    "slot": "250",
     "type": "bool"
   },
   {
-    "bytes": "1600",
-    "label": "__gap",
-    "offset": 0,
-    "slot": "253",
-    "type": "uint256[50]"
+    "bytes": "12",
+    "label": "spacer_250_20_12",
+    "offset": 2,
+    "slot": "250",
+    "type": "bytes12"
   },
   {
     "bytes": "20",
     "label": "superchainConfig",
     "offset": 0,
-    "slot": "303",
+    "slot": "251",
     "type": "contract ISuperchainConfig"
   },
   {
     "bytes": "20",
     "label": "portal",
     "offset": 0,
-    "slot": "304",
+    "slot": "252",
     "type": "contract IOptimismPortal"
   },
   {
     "bytes": "20",
     "label": "systemConfig",
     "offset": 0,
-    "slot": "305",
+    "slot": "253",
     "type": "contract ISystemConfig"
   }
 ]

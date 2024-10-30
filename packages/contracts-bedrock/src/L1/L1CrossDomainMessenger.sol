@@ -20,8 +20,8 @@ import { IOptimismPortal } from "src/L1/interfaces/IOptimismPortal.sol";
 ///         for sending and receiving data on the L1 side. Users are encouraged to use this
 ///         interface instead of interacting with lower-level contracts directly.
 contract L1CrossDomainMessenger is CrossDomainMessenger, ISemver, Initializable {
-    /// @notice Gap to prevent storage layout in child contracts from impacting
-    uint256[50] private __gap;
+    /// @notice Spacer to give the initializer a full slot, to avoid offsetting the superchainConfig slot.
+    bytes12 private spacer_250_20_12;
 
     /// @notice Contract of the SuperchainConfig.
     ISuperchainConfig public superchainConfig;
