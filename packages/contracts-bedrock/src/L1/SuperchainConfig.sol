@@ -47,7 +47,7 @@ contract SuperchainConfig is Initializable, ISemver {
 
     /// @notice Constructs the SuperchainConfig contract.
     constructor() {
-        initialize({ _guardian: address(0), _upgrader: address(0), _paused: false });
+        _disableInitializers();
     }
 
     /// @notice Initializer.
