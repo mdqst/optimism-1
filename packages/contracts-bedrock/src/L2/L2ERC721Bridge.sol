@@ -31,12 +31,14 @@ contract L2ERC721Bridge is ERC721Bridge, ISemver {
     /// @custom:semver 1.7.1-beta.2
     string public constant version = "1.7.1-beta.2";
 
-    /// @notice
+    /// @notice Getter function for the messenger contract.
+    /// @return Address of the messenger on this domain.
     function messenger() public pure override returns (ICrossDomainMessenger) {
         return ICrossDomainMessenger(Predeploys.L2_CROSS_DOMAIN_MESSENGER);
     }
 
-    /// @notice
+    /// @notice Getter function for the other bridge.
+    /// @return Address of the bridge on the other network.
     function otherBridge() public view override returns (ERC721Bridge) {
         bytes memory data =
             IL1Block(Predeploys.L1_BLOCK_ATTRIBUTES).getConfig(Types.ConfigType.SET_L1_ERC_721_BRIDGE_ADDRESS);
