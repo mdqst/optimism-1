@@ -21,7 +21,7 @@ import { IOptimismPortal } from "src/L1/interfaces/IOptimismPortal.sol";
 ///         interface instead of interacting with lower-level contracts directly.
 contract L1CrossDomainMessenger is CrossDomainMessenger, ISemver, Initializable {
     /// @notice Spacer to give the initializer a full slot, to avoid offsetting the superchainConfig slot.
-    bytes12 private spacer_250_20_12;
+    bytes30 private spacer_250_2_30;
 
     /// @notice Contract of the SuperchainConfig.
     ISuperchainConfig public superchainConfig;
