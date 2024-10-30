@@ -427,7 +427,10 @@ func (l *BatchSubmitter) loop() {
 				}
 				l.txpoolMutex.Unlock()
 				l.Log.Info("Handling receipt", "id", r.ID)
-				l.handleReceipt(r)
+				err := l.handleReceipt(r)
+				if err != nil {
+					l.Log.Error("Error handling receipt", "error", err)
+				}
 			case <-receiptLoopDone:
 				l.Log.Info("Receipt processing loop done")
 				return
@@ -744,12 +747,13 @@ func (l *BatchSubmitter) calldataTxCandidate(data []byte) *txmgr.TxCandidate {
 	}
 }
 
-func (l *BatchSubmitter) handleReceipt(r txmgr.TxReceipt[txRef]) {
+func (l *BatchSubmitter) handleReceipt(r txmgr.TxReceipt[txRef]) error {
 	// Record TX Status
 	if r.Err != nil {
 		l.recordFailedTx(r.ID.id, r.Err)
+		return nil
 	} else {
-		l.recordConfirmedTx(r.ID.id, r.Receipt)
+		return l.recordConfirmedTx(r.ID.id, r.Receipt)
 	}
 }
 
@@ -773,10 +777,22 @@ func (l *BatchSubmitter) recordFailedTx(id txID, err error) {
 	l.state.TxFailed(id)
 }
 
-func (l *BatchSubmitter) recordConfirmedTx(id txID, receipt *types.Receipt) {
+func (l *BatchSubmitter) recordConfirmedTx(id txID, receipt *types.Receipt) error {
 	l.Log.Info("Transaction confirmed", logFields(id, receipt)...)
-	l1block := eth.ReceiptBlockID(receipt)
-	l.state.TxConfirmed(id, l1block)
+	tctx, cancel := context.WithTimeout(l.shutdownCtx, l.Config.NetworkTimeout)
+	defer cancel()
+	header, err := l.L1Client.HeaderByNumber(tctx, receipt.BlockNumber)
+	if err != nil {
+		return err
+	}
+	br := eth.BlockRef{
+		Hash:       receipt.BlockHash,
+		Number:     receipt.BlockNumber.Uint64(),
+		ParentHash: header.ParentHash,
+		Time:       header.Time,
+	}
+	l.state.TxConfirmed(id, br)
+	return nil
 }
 
 // l1Tip gets the current L1 tip as a L1BlockRef. The passed context is assumed
