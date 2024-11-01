@@ -1,4 +1,4 @@
-module cond
+module map
 
 go 1.22
 

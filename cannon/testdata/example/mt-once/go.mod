@@ -1,4 +1,4 @@
-module mutex
+module once
 
 go 1.22
 

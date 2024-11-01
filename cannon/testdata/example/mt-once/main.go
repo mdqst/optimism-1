@@ -8,47 +8,62 @@ import (
 )
 
 func main() {
-	TestMutex()
+	TestOnce()
+	TestOncePanic()
 
+	fmt.Println("Once test passed")
 	runtime.GC()
 	_, _ = os.Stdout.Write([]byte("GC complete!\n"))
 }
 
-func TestMutex() {
-	m := new(sync.Mutex)
+type one int
 
-	m.Lock()
-	if m.TryLock() {
-		_, _ = fmt.Fprintln(os.Stderr, "TryLock succeeded with mutex locked")
-		os.Exit(1)
-	}
-	m.Unlock()
-	if !m.TryLock() {
-		_, _ = fmt.Fprintln(os.Stderr, "TryLock failed with mutex unlocked")
-		os.Exit(1)
-	}
-	m.Unlock()
-
-	c := make(chan bool)
-	for i := 0; i < 10; i++ {
-		go HammerMutex(m, 1000, c)
-	}
-	for i := 0; i < 10; i++ {
-		<-c
-	}
-	fmt.Println("Mutex test passed")
+func (o *one) Increment() {
+	*o++
 }
 
-func HammerMutex(m *sync.Mutex, loops int, cdone chan bool) {
-	for i := 0; i < loops; i++ {
-		if i%3 == 0 {
-			if m.TryLock() {
-				m.Unlock()
-			}
-			continue
-		}
-		m.Lock()
-		m.Unlock()
+func run(once *sync.Once, o *one, c chan bool) {
+	once.Do(func() { o.Increment() })
+	if v := *o; v != 1 {
+		_, _ = fmt.Fprintf(os.Stderr, "once failed inside run: %d is not 1\n", v)
+		os.Exit(1)
 	}
-	cdone <- true
+	c <- true
+}
+
+func TestOnce() {
+	o := new(one)
+	once := new(sync.Once)
+	c := make(chan bool)
+	const N = 10
+	for i := 0; i < N; i++ {
+		go run(once, o, c)
+	}
+	for i := 0; i < N; i++ {
+		<-c
+	}
+	if *o != 1 {
+		_, _ = fmt.Fprintf(os.Stderr, "once failed outside run: %d is not 1\n", *o)
+		os.Exit(1)
+	}
+}
+
+func TestOncePanic() {
+	var once sync.Once
+	func() {
+		defer func() {
+			if r := recover(); r == nil {
+				_, _ = fmt.Fprintf(os.Stderr, "Once.Do did not panic")
+				os.Exit(1)
+			}
+		}()
+		once.Do(func() {
+			panic("failed")
+		})
+	}()
+
+	once.Do(func() {
+		_, _ = fmt.Fprintf(os.Stderr, "Once.Do called twice")
+		os.Exit(1)
+	})
 }

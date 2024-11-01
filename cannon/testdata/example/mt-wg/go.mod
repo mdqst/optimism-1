@@ -1,4 +1,4 @@
-module multithreaded
+module wg
 
 go 1.22
 

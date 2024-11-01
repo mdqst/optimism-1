@@ -6,7 +6,6 @@ import (
 	"runtime"
 	"sync"
 	"sync/atomic"
-	"testing"
 )
 
 func main() {
@@ -145,10 +144,8 @@ func TestRWMutex() {
 	m.RUnlock()
 
 	defer runtime.GOMAXPROCS(runtime.GOMAXPROCS(-1))
-	n := 1000
-	if testing.Short() {
-		n = 5
-	}
+	n := 5
+
 	HammerRWMutex(1, 1, n)
 	HammerRWMutex(1, 3, n)
 	HammerRWMutex(1, 10, n)

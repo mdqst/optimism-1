@@ -5,41 +5,38 @@ import (
 	"os"
 	"runtime"
 	"sync"
-	"sync/atomic"
 )
 
 func main() {
+	var x sync.Pool
+
+	x.Put(1)
+	x.Put(2)
+
 	// try some concurrency!
 	var wg sync.WaitGroup
 	wg.Add(2)
-	var x atomic.Int32
 	go func() {
-		x.Add(2)
+		x.Put(3)
 		wg.Done()
 	}()
 	go func() {
-		x.Add(40)
+		x.Put(4)
 		wg.Done()
 	}()
+
 	wg.Wait()
-	fmt.Printf("waitgroup result: %d\n", x.Load())
 
-	// channels
-	a := make(chan int, 1)
-	b := make(chan int)
-	c := make(chan int)
-	go func() {
-		t0 := <-a
-		b <- t0
-	}()
-	go func() {
-		t1 := <-b
-		c <- t1
-	}()
-	a <- 1234
-	out := <-c
-	fmt.Printf("channels result: %d\n", out)
+	wg.Add(4)
+	for i := 0; i < 4; i++ {
+		go func() {
+			x.Get()
+			wg.Done()
+		}()
+	}
+	wg.Wait()
 
+	fmt.Println("Pool test passed")
 	// try a GC! (the runtime might not have run one yet)
 	runtime.GC()
 	_, _ = os.Stdout.Write([]byte("GC complete!\n"))

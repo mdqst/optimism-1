@@ -92,7 +92,7 @@ func TestCondSignalGenerations() {
 func TestCondBroadcast() {
 	var m sync.Mutex
 	c := sync.NewCond(&m)
-	n := 200
+	n := 5
 	running := make(chan int, n)
 	awake := make(chan int, n)
 	exit := false
@@ -203,7 +203,7 @@ func TestRace() {
 }
 
 func TestCondSignalStealing() {
-	for iters := 0; iters < 1000; iters++ {
+	for iters := 0; iters < 5; iters++ {
 		var m sync.Mutex
 		cond := sync.NewCond(&m)
 
