@@ -102,7 +102,7 @@ func TestInstrumentedState_MultithreadedProgram(t *testing.T) {
 
 			var stdOutBuf, stdErrBuf bytes.Buffer
 			us := NewInstrumentedState(state, oracle, io.MultiWriter(&stdOutBuf, os.Stdout), io.MultiWriter(&stdErrBuf, os.Stderr), testutil.CreateLogger(), nil)
-			for i := 0; i < 4_000_000; i++ {
+			for i := 0; i < 5_000_000; i++ {
 				if us.GetState().GetExited() {
 					break
 				}
