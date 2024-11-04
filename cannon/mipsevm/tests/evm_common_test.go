@@ -568,6 +568,48 @@ func TestEVMSingleStep_MthiMtlo(t *testing.T) {
 	}
 }
 
+func TestEVMSingleStep_BeqBne(t *testing.T) {
+	versions := GetMipsVersionTestCases(t)
+	cases := []struct {
+		name   string
+		imm    uint32
+		opcode uint32
+		rs     Word
+		rt     Word
+	}{
+		{name: "bne", opcode: uint32(0x5), imm: uint32(0x10), rs: Word(0xaa), rt: Word(0xdeadbeef)},
+		//{name: "beq", opcode: uint32(0x4), imm: uint32(0x10), rs: Word(0xdeadbeef), rt: Word(0xdeadbeef)},
+	}
+	for _, v := range versions {
+		for i, tt := range cases {
+			testName := fmt.Sprintf("%v (%v)", tt.name, v.Name)
+			t.Run(testName, func(t *testing.T) {
+				goVm := v.VMFactory(nil, os.Stdout, os.Stderr, testutil.CreateLogger(), testutil.WithRandomization(int64(i)), testutil.WithPC(0), testutil.WithNextPC(4))
+				state := goVm.GetState()
+				rsReg := uint32(9)
+				rtReg := uint32(8)
+				insn := tt.opcode<<26 | rsReg<<21 | rtReg<<16 | tt.imm
+				state.GetRegistersRef()[rtReg] = tt.rt
+				state.GetRegistersRef()[rsReg] = tt.rs
+				testutil.StoreInstruction(state.GetMemory(), 0, insn)
+				step := state.GetStep()
+				// Setup expectations
+				expected := testutil.NewExpectedState(state)
+				expected.Step = state.GetStep() + 1
+				expected.PC = state.GetCpu().NextPC
+				expected.NextPC = state.GetCpu().NextPC + Word(tt.imm<<2)
+
+				stepWitness, err := goVm.Step(true)
+				require.NoError(t, err)
+				// Check expectations
+				expected.Validate(t, state)
+				testutil.ValidateEVM(t, stepWitness, step, goVm, v.StateHashFn, v.Contracts)
+			})
+		}
+	}
+
+}
+
 func TestEVM_MMap(t *testing.T) {
 	versions := GetMipsVersionTestCases(t)
 	cases := []struct {
