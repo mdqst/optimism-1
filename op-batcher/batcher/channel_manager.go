@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"math"
 	"sync"
 
 	"github.com/ethereum-optimism/optimism/op-batcher/metrics"
@@ -530,4 +531,17 @@ func (s *channelManager) pruneChannels(newSafeHead eth.L2BlockRef) {
 		i++
 	}
 	s.channelQueue = s.channelQueue[i:]
+}
+
+// PendingDABytes returns the current number of bytes pending to be written to the DA layer (from blocks fetched from L2
+// but not yet in a channel).
+func (s *channelManager) PendingDABytes() int64 {
+	f := s.metr.PendingDABytes()
+	if f >= math.MaxInt64 {
+		return math.MaxInt64
+	}
+	if f <= math.MinInt64 {
+		return math.MinInt64
+	}
+	return int64(f)
 }

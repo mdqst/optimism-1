@@ -28,6 +28,7 @@ import (
 // L2FaultProofEnv is a test harness for a fault provable L2 chain.
 type L2FaultProofEnv struct {
 	log       log.Logger
+	Logs      *testlog.CapturingHandler
 	Batcher   *helpers.L2Batcher
 	Sequencer *helpers.L2Sequencer
 	Engine    *helpers.L2Engine
@@ -40,7 +41,8 @@ type L2FaultProofEnv struct {
 }
 
 func NewL2FaultProofEnv[c any](t helpers.Testing, testCfg *TestCfg[c], tp *e2eutils.TestParams, batcherCfg *helpers.BatcherCfg) *L2FaultProofEnv {
-	log := testlog.Logger(t, log.LvlDebug)
+	log, logs := testlog.CaptureLogger(t, log.LevelDebug)
+
 	dp := NewDeployParams(t, tp, func(dp *e2eutils.DeployParams) {
 		genesisBlock := hexutil.Uint64(0)
 
@@ -111,6 +113,7 @@ func NewL2FaultProofEnv[c any](t helpers.Testing, testCfg *TestCfg[c], tp *e2eut
 
 	return &L2FaultProofEnv{
 		log:       log,
+		Logs:      logs,
 		Batcher:   batcher,
 		Sequencer: sequencer,
 		Engine:    engine,
@@ -145,9 +148,20 @@ func WithL2Claim(claim common.Hash) FixtureInputParam {
 	}
 }
 
+func WithL2BlockNumber(num uint64) FixtureInputParam {
+	return func(f *FixtureInputs) {
+		f.L2BlockNumber = num
+	}
+}
+
 func (env *L2FaultProofEnv) RunFaultProofProgram(t helpers.Testing, l2ClaimBlockNum uint64, checkResult CheckResult, fixtureInputParams ...FixtureInputParam) {
 	// Fetch the pre and post output roots for the fault proof.
-	preRoot, err := env.Sequencer.RollupClient().OutputAtBlock(t.Ctx(), l2ClaimBlockNum-1)
+	l2PreBlockNum := l2ClaimBlockNum - 1
+	if l2ClaimBlockNum == 0 {
+		// If we are at genesis, we assert that we don't move the chain at all.
+		l2PreBlockNum = 0
+	}
+	preRoot, err := env.Sequencer.RollupClient().OutputAtBlock(t.Ctx(), l2PreBlockNum)
 	require.NoError(t, err)
 	claimRoot, err := env.Sequencer.RollupClient().OutputAtBlock(t.Ctx(), l2ClaimBlockNum)
 	require.NoError(t, err)

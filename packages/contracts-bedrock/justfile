@@ -16,15 +16,23 @@ dep-status:
 ########################################################
 
 # Checks that the correct version of Foundry is installed.
-prebuild:
-  ./scripts/checks/check-foundry-install.sh
+check-foundry:
+  cd ../../ && ./ops/scripts/check-foundry.sh
+
+# Checks that semgrep is installed.
+check-semgrep:
+  cd ../../ && just check-semgrep
+
+# Checks that the correct versions of Foundry and semgrep are installed.
+check-dependencies:
+  just check-foundry && just check-semgrep
 
 # Core forge build command
 forge-build:
   forge build
 
 # Builds the contracts.
-build: prebuild lint-fix-no-fail forge-build interfaces-check-no-build
+build: check-dependencies lint-fix-no-fail forge-build interfaces-check-no-build
 
 # Builds the go-ffi tool for contract tests.
 build-go-ffi-default:
@@ -88,7 +96,7 @@ deploy:
 
 # Generates a gas snapshot without building.
 gas-snapshot-no-build:
-  forge snapshot --match-contract GasBenchMark
+  forge snapshot --match-contract GasBenchMark --snap snapshots/.gas-snapshot
 
 # Generates a gas snapshot.
 gas-snapshot: build-go-ffi gas-snapshot-no-build
@@ -108,9 +116,9 @@ kontrol-summary-full: kontrol-summary kontrol-summary-fp
 snapshots-abi-storage:
   go run ./scripts/autogen/generate-snapshots .
 
-# Updates the semver-lock.json file.
+# Updates the snapshots/semver-lock.json file.
 semver-lock:
-  forge script scripts/autogen/SemverLock.s.sol
+  go run scripts/autogen/generate-semver-lock/main.go
 
 # Generates core snapshots without building contracts. Currently just an alias for
 # snapshots-abi-storage because we no longer run Kontrol snapshots here. Run
@@ -127,7 +135,7 @@ snapshots: build snapshots-no-build
 
 # Checks that the gas snapshot is up to date without building.
 gas-snapshot-check-no-build:
-  forge snapshot --match-contract GasBenchMark --check
+  forge snapshot --match-contract GasBenchMark --snap snapshots/.gas-snapshot --check
 
 # Checks that the gas snapshot is up to date.
 gas-snapshot-check: build-go-ffi gas-snapshot-check-no-build
@@ -163,11 +171,14 @@ semver-diff-check: build semver-diff-check-no-build
 
 # Checks that the semgrep tests are valid.
 semgrep-test-validity-check:
-  forge fmt ../../semgrep/sol-rules.t.sol --check
+  forge fmt ../../.semgrep/tests/sol-rules.t.sol --check
+
+# Checks that forge test names are correctly formatted. Does not build contracts.
+lint-forge-tests-check-no-build:
+  go run ./scripts/checks/test-names
 
 # Checks that forge test names are correctly formatted.
-lint-forge-tests-check:
-  go run ./scripts/checks/names
+lint-forge-tests-check: build lint-forge-tests-check-no-build
 
 # Checks that contracts are properly linted.
 lint-check:
@@ -199,7 +210,11 @@ check-kontrol-summaries-unchanged:
 
 # Runs semgrep on the contracts.
 semgrep:
-  cd ../../ && semgrep scan --config=semgrep ./packages/contracts-bedrock
+  cd ../../ && semgrep scan --config .semgrep/rules/ ./packages/contracts-bedrock
+
+# Runs semgrep tests.
+semgrep-test:
+  cd ../../ && semgrep scan --test --config .semgrep/rules/ .semgrep/tests/
 
 # TODO: Also run lint-forge-tests-check but we need to fix the test names first.
 # Runs all checks.
@@ -212,7 +227,8 @@ check:
   semver-diff-check-no-build \
   validate-deploy-configs \
   validate-spacers-no-build \
-  interfaces-check-no-build
+  interfaces-check-no-build \
+  lint-forge-tests-check-no-build
 
 ########################################################
 #                      DEV TOOLS                       #
