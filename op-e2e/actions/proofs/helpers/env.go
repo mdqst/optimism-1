@@ -45,6 +45,8 @@ func NewL2FaultProofEnv[c any](t helpers.Testing, testCfg *TestCfg[c], tp *e2eut
 
 	dp := NewDeployParams(t, tp, func(dp *e2eutils.DeployParams) {
 		genesisBlock := hexutil.Uint64(0)
+		fourteen := hexutil.Uint64(14)
+		dp.DeployConfig.L2GenesisHoloceneTimeOffset = &fourteen // TODO undo this hack
 
 		// Enable cancun always
 		dp.DeployConfig.L1CancunTimeOffset = &genesisBlock
@@ -64,7 +66,6 @@ func NewL2FaultProofEnv[c any](t helpers.Testing, testCfg *TestCfg[c], tp *e2eut
 		case Granite:
 			dp.DeployConfig.L2GenesisGraniteTimeOffset = &genesisBlock
 		case Holocene:
-			dp.DeployConfig.L2GenesisHoloceneTimeOffset = &genesisBlock
 		}
 	})
 	sd := e2eutils.Setup(t, dp, helpers.DefaultAlloc)

@@ -1,0 +1,96 @@
+package proofs
+
+import (
+	"testing"
+
+	actionsHelpers "github.com/ethereum-optimism/optimism/op-e2e/actions/helpers"
+	"github.com/ethereum-optimism/optimism/op-e2e/actions/proofs/helpers"
+	"github.com/ethereum-optimism/optimism/op-program/client/claim"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/stretchr/testify/require"
+)
+
+func Test_ProgramAction_HoloceneActivation(gt *testing.T) {
+
+	runHoloceneDerivationTest := func(gt *testing.T, testCfg *helpers.TestCfg[any]) {
+		t := actionsHelpers.NewDefaultTesting(gt)
+		env := helpers.NewL2FaultProofEnv(t, testCfg, helpers.NewTestParams(), helpers.NewBatcherCfg())
+
+		t.Log("HOLOCENE_TIME: ", env.Sequencer.RollupCfg.HoloceneTime)
+
+		blocks := []uint{1, 2}
+		targetHeadNumber := 2
+		for env.Engine.L2Chain().CurrentBlock().Number.Uint64() < uint64(targetHeadNumber) {
+			env.Sequencer.ActL2StartBlock(t)
+			// Send an L2 tx
+			env.Alice.L2.ActResetTxOpts(t)
+			env.Alice.L2.ActSetTxToAddr(&env.Dp.Addresses.Bob)
+			env.Alice.L2.ActMakeTx(t)
+			env.Engine.ActL2IncludeTx(env.Alice.Address())(t)
+			env.Sequencer.ActL2EndBlock(t)
+		}
+
+		// Build up a local list of frames
+		orderedFrames := make([][]byte, 0, 2)
+		// Buffer the blocks in the batcher and populat orderedFrames list
+		env.Batcher.ActCreateChannel(t, false)
+		for i, blockNum := range blocks {
+			env.Batcher.ActAddBlockByNumber(t, int64(blockNum), actionsHelpers.BlockLogger(t))
+			if i == len(blocks)-1 {
+				env.Batcher.ActL2ChannelClose(t)
+			}
+			frame := env.Batcher.ReadNextOutputFrame(t)
+			require.NotEmpty(t, frame, "frame %d", i)
+			orderedFrames = append(orderedFrames, frame)
+		}
+
+		includeBatchTx := func() {
+			// Include the last transaction submitted by the batcher.
+			env.Miner.ActL1StartBlock(12)(t)
+			env.Miner.ActL1IncludeTxByHash(env.Batcher.LastSubmitted.Hash())(t)
+			env.Miner.ActL1EndBlock(t)
+		}
+
+		// Submit frames
+		env.Batcher.ActL2BatchSubmitRaw(t, orderedFrames[0])
+		includeBatchTx()
+
+		// TODO Holocene should activate now -- can we set an L1 block time activation in the genesis and then manually mine a block at that
+		// timestamp now?
+
+		env.Batcher.ActL2BatchSubmitRaw(t, orderedFrames[1])
+		includeBatchTx()
+
+		// Instruct the sequencer to derive the L2 chain from the data on L1 that the batcher just posted.
+		env.Sequencer.ActL1HeadSignal(t)
+		env.Sequencer.ActL2PipelineFull(t)
+
+		l2SafeHead := env.Sequencer.L2Safe()
+
+		require.EqualValues(t, uint64(0), l2SafeHead.Number) // channel should be dropped, so no safe head progression
+
+		t.Log("Safe head progressed as expected", "l2SafeHeadNumber", l2SafeHead.Number)
+
+		env.RunFaultProofProgram(t, l2SafeHead.Number, testCfg.CheckResult, testCfg.InputParams...)
+	}
+
+	matrix := helpers.NewMatrix[any]()
+	defer matrix.Run(gt)
+
+	matrix.AddTestCase(
+		"HonestClaim-HoloceneActivation",
+		nil,
+		helpers.NewForkMatrix(helpers.Granite),
+		runHoloceneDerivationTest,
+		helpers.ExpectNoError(),
+	)
+	matrix.AddTestCase(
+		"JunkClaim-HoloceneActivation",
+		nil,
+		helpers.NewForkMatrix(helpers.Granite),
+		runHoloceneDerivationTest,
+		helpers.ExpectError(claim.ErrClaimNotValid),
+		helpers.WithL2Claim(common.HexToHash("0xdeadbeef")),
+	)
+
+}
