@@ -3,11 +3,13 @@ package proofs
 import (
 	"testing"
 
+	"github.com/ethereum-optimism/optimism/op-chain-ops/genesis"
 	actionsHelpers "github.com/ethereum-optimism/optimism/op-e2e/actions/helpers"
 	"github.com/ethereum-optimism/optimism/op-e2e/actions/proofs/helpers"
 	"github.com/ethereum-optimism/optimism/op-program/client/claim"
 	"github.com/ethereum-optimism/optimism/op-service/testlog"
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/stretchr/testify/require"
 )
 
@@ -15,7 +17,14 @@ func Test_ProgramAction_HoloceneActivation(gt *testing.T) {
 
 	runHoloceneDerivationTest := func(gt *testing.T, testCfg *helpers.TestCfg[any]) {
 		t := actionsHelpers.NewDefaultTesting(gt)
-		env := helpers.NewL2FaultProofEnv(t, testCfg, helpers.NewTestParams(), helpers.NewBatcherCfg())
+
+		// Define override to activate Holocene 14 seconds after genesis
+		var setHoloceneTime = func(dc *genesis.DeployConfig) {
+			fourteen := hexutil.Uint64(14)
+			dc.L2GenesisHoloceneTimeOffset = &fourteen
+		}
+
+		env := helpers.NewL2FaultProofEnv(t, testCfg, helpers.NewTestParams(), helpers.NewBatcherCfg(), setHoloceneTime)
 
 		t.Log("HoloceneTime:  ", env.Sequencer.RollupCfg.HoloceneTime)
 

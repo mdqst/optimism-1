@@ -4,6 +4,7 @@ import (
 	"context"
 	"math/rand"
 
+	"github.com/ethereum-optimism/optimism/op-chain-ops/genesis"
 	e2ecfg "github.com/ethereum-optimism/optimism/op-e2e/config"
 
 	altda "github.com/ethereum-optimism/optimism/op-alt-da"
@@ -40,13 +41,13 @@ type L2FaultProofEnv struct {
 	Bob       *helpers.CrossLayerUser
 }
 
-func NewL2FaultProofEnv[c any](t helpers.Testing, testCfg *TestCfg[c], tp *e2eutils.TestParams, batcherCfg *helpers.BatcherCfg) *L2FaultProofEnv {
+type deployConfigOverride func(*genesis.DeployConfig)
+
+func NewL2FaultProofEnv[c any](t helpers.Testing, testCfg *TestCfg[c], tp *e2eutils.TestParams, batcherCfg *helpers.BatcherCfg, deployConfigOverrides ...deployConfigOverride) *L2FaultProofEnv {
 	log, logs := testlog.CaptureLogger(t, log.LevelDebug)
 
 	dp := NewDeployParams(t, tp, func(dp *e2eutils.DeployParams) {
 		genesisBlock := hexutil.Uint64(0)
-		fourteen := hexutil.Uint64(14)
-		dp.DeployConfig.L2GenesisHoloceneTimeOffset = &fourteen // TODO undo this hack
 
 		// Enable cancun always
 		dp.DeployConfig.L1CancunTimeOffset = &genesisBlock
@@ -66,6 +67,11 @@ func NewL2FaultProofEnv[c any](t helpers.Testing, testCfg *TestCfg[c], tp *e2eut
 		case Granite:
 			dp.DeployConfig.L2GenesisGraniteTimeOffset = &genesisBlock
 		case Holocene:
+			dp.DeployConfig.L2GenesisHoloceneTimeOffset = &genesisBlock
+		}
+
+		for _, override := range deployConfigOverrides {
+			override(dp.DeployConfig)
 		}
 	})
 	sd := e2eutils.Setup(t, dp, helpers.DefaultAlloc)
