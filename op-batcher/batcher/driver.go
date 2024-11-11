@@ -469,6 +469,7 @@ func (l *BatchSubmitter) loop() {
 			l.publishStateToL1(queue, receiptsCh, daGroup)
 
 		case <-l.shutdownCtx.Done():
+			l.Log.Warn("main loop returning")
 			return
 		}
 	}
