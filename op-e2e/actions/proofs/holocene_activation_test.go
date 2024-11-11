@@ -28,6 +28,7 @@ func Test_ProgramAction_HoloceneActivation(gt *testing.T) {
 
 		t.Log("HoloceneTime:  ", env.Sequencer.RollupCfg.HoloceneTime)
 
+		// Build the L2 chain
 		blocks := []uint{1, 2}
 		targetHeadNumber := 2
 		for env.Engine.L2Chain().CurrentBlock().Number.Uint64() < uint64(targetHeadNumber) {
@@ -63,14 +64,14 @@ func Test_ProgramAction_HoloceneActivation(gt *testing.T) {
 
 		// Submit first frame
 		env.Batcher.ActL2BatchSubmitRaw(t, orderedFrames[0])
-		includeBatchTx()
+		includeBatchTx() // block should have a timestamp of 12s after genesis
 
-		// Holocene should activate now, so that the previous l1 block
-		// was nefore HoloceneTime and the next l1 block is after it
+		// Holocene should activate 14s after genesis, so that the previous l1 block
+		// was before HoloceneTime and the next l1 block is after it
 
 		// Submit final frame
 		env.Batcher.ActL2BatchSubmitRaw(t, orderedFrames[1])
-		includeBatchTx()
+		includeBatchTx() // block should have a timestamp of 24s after genesis
 
 		// Instruct the sequencer to derive the L2 chain from the data on L1 that the batcher just posted.
 		env.Sequencer.ActL1HeadSignal(t)
