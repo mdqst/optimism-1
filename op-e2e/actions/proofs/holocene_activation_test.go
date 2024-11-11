@@ -6,6 +6,7 @@ import (
 	actionsHelpers "github.com/ethereum-optimism/optimism/op-e2e/actions/helpers"
 	"github.com/ethereum-optimism/optimism/op-e2e/actions/proofs/helpers"
 	"github.com/ethereum-optimism/optimism/op-program/client/claim"
+	"github.com/ethereum-optimism/optimism/op-service/testlog"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/stretchr/testify/require"
 )
@@ -16,7 +17,7 @@ func Test_ProgramAction_HoloceneActivation(gt *testing.T) {
 		t := actionsHelpers.NewDefaultTesting(gt)
 		env := helpers.NewL2FaultProofEnv(t, testCfg, helpers.NewTestParams(), helpers.NewBatcherCfg())
 
-		t.Log("HOLOCENE_TIME: ", env.Sequencer.RollupCfg.HoloceneTime)
+		t.Log("HoloceneTime:  ", env.Sequencer.RollupCfg.HoloceneTime)
 
 		blocks := []uint{1, 2}
 		targetHeadNumber := 2
@@ -32,7 +33,7 @@ func Test_ProgramAction_HoloceneActivation(gt *testing.T) {
 
 		// Build up a local list of frames
 		orderedFrames := make([][]byte, 0, 2)
-		// Buffer the blocks in the batcher and populat orderedFrames list
+		// Buffer the blocks in the batcher and populate orderedFrames list
 		env.Batcher.ActCreateChannel(t, false)
 		for i, blockNum := range blocks {
 			env.Batcher.ActAddBlockByNumber(t, int64(blockNum), actionsHelpers.BlockLogger(t))
@@ -51,13 +52,14 @@ func Test_ProgramAction_HoloceneActivation(gt *testing.T) {
 			env.Miner.ActL1EndBlock(t)
 		}
 
-		// Submit frames
+		// Submit first frame
 		env.Batcher.ActL2BatchSubmitRaw(t, orderedFrames[0])
 		includeBatchTx()
 
-		// TODO Holocene should activate now -- can we set an L1 block time activation in the genesis and then manually mine a block at that
-		// timestamp now?
+		// Holocene should activate now, so that the previous l1 block
+		// was nefore HoloceneTime and the next l1 block is after it
 
+		// Submit final frame
 		env.Batcher.ActL2BatchSubmitRaw(t, orderedFrames[1])
 		includeBatchTx()
 
@@ -66,10 +68,20 @@ func Test_ProgramAction_HoloceneActivation(gt *testing.T) {
 		env.Sequencer.ActL2PipelineFull(t)
 
 		l2SafeHead := env.Sequencer.L2Safe()
-
 		require.EqualValues(t, uint64(0), l2SafeHead.Number) // channel should be dropped, so no safe head progression
-
 		t.Log("Safe head progressed as expected", "l2SafeHeadNumber", l2SafeHead.Number)
+
+		// Log assertions
+		filters := []string{
+			"FrameQueue: resetting with Holocene activation",
+			"ChannelMux: transforming to Holocene stage",
+			"BatchMux: transforming to Holocene stage",
+			"dropping non-first frame without channel",
+		}
+		for _, filter := range filters {
+			recs := env.Logs.FindLogs(testlog.NewMessageContainsFilter(filter), testlog.NewAttributesFilter("role", "sequencer"))
+			require.Len(t, recs, 1, "searching for %d instances of '%s' in logs from role %s", 1, filter, "sequencer")
+		}
 
 		env.RunFaultProofProgram(t, l2SafeHead.Number, testCfg.CheckResult, testCfg.InputParams...)
 	}
