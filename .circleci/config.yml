@@ -129,6 +129,14 @@ commands:
             # of the -j parameter, which speeds it up a lot.
             git submodule update --init --recursive --force -j 8
           working_directory: packages/contracts-bedrock
+      - run:
+          name: Verify mise dependencies
+          command: |
+            if command -v mise &> /dev/null; then
+              mise install
+            else
+              echo "mise not found, skipping"
+            fi
 
   notify-failures-on-develop:
     description: "Notify Slack"
@@ -793,8 +801,18 @@ jobs:
           if: ${{ uses_artifacts }}
       - run:
           name: Fuzz
-          command: make fuzz
+          command: |
+            make fuzz
           working_directory: "<<parameters.package_name>>"
+      - run:
+          name: Copy fuzz artifacts
+          command: |
+            mkdir -p fuzzdata
+            find ./<<parameters.package_name>> -type d -name "fuzz" -exec sh -c 'cp -r "{}"/* fuzzdata/ 2>/dev/null || true' \;
+          when: always
+      - store_artifacts:
+          path: ./fuzzdata
+          when: always
 
   go-lint:
     machine: true
